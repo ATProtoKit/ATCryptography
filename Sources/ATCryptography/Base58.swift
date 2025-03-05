@@ -19,7 +19,7 @@ import BigInt
 public struct Base58Alphabet: Sendable {
 
     /// An array representing the encoding character set.
-    public var encode: [Character] = Array(repeating: "\0", count: 58)
+    public var encode: [UInt8] = Array(repeating: 0, count: 58)
 
     /// An array used for decoding Base58 characters back into their index values.
     public var decode: [UInt8] = Array(repeating: 0xFF, count: 128)
@@ -31,13 +31,11 @@ public struct Base58Alphabet: Sendable {
     ///
     /// - Parameter alphabet: A string containing exactly 58 unique ASCII characters.
     private init(_ alphabet: String) {
-        for (i, char) in alphabet.enumerated() {
-            let asciiValue = char.asciiValue
+        let bytes = alphabet.utf8.map { UInt8($0) }
 
-            encode[i] = char
-            // Since the `create` function already checks each character for the ASCII value,
-            // no character will inappropriately be made `0x00`.
-            decode[Int(asciiValue ?? 0x00)] = UInt8(i)
+        for (i, byte) in bytes.enumerated() {
+            encode[i] = byte
+            decode[Int(byte)] = UInt8(i)
         }
     }
 
@@ -91,7 +89,7 @@ public struct Base58 {
     /// - Returns: A Base58-encoded string.
     public static func encode(_ data: Data, alphabet: Base58Alphabet = .default) -> String {
         var intData = BigUInt(data)
-        var result = [Character]()
+        var result = [UInt8]()
 
         while intData > 0 {
             let (quotient, remainder) = intData.quotientAndRemainder(dividingBy: base)
@@ -100,7 +98,9 @@ public struct Base58 {
         }
 
         result.append(contentsOf: data.prefix(while: { $0 == 0 }).map { _ in alphabet.encode[0] })
-        return String(result.reversed())
+        result.reverse()
+
+        return String(decoding: result, as: UTF8.self)
     }
 
     /// Decodes a Base58-encoded string back into binary data.
@@ -114,15 +114,14 @@ public struct Base58 {
     public static func decode(_ string: String, alphabet: Base58Alphabet = .default) throws -> Data {
         var intData = BigUInt(0)
 
-        let leadingZeroes = string.prefix(while: { $0 == alphabet.encode[0] }).count
+        let leadingZeroes = string.prefix(while: { $0 == Character(UnicodeScalar(alphabet.encode[0])) }).count
         let trimmedString = string.dropFirst(leadingZeroes)
 
-        for char in trimmedString {
-            guard let asciiValue = char.asciiValue, asciiValue < 128, alphabet.decode[Int(asciiValue)] != 0xFF else {
-                throw Base58Error.invalidCharacter(character: char)
+        for char in trimmedString.utf8 {
+            guard char < 128, alphabet.decode[Int(char)] != 0xFF else {
+                throw Base58Error.invalidCharacter(character: Character(UnicodeScalar(char)))
             }
-            let index = alphabet.decode[Int(asciiValue)]
-            intData = intData * base + BigUInt(index)
+            intData = intData * base + BigUInt(alphabet.decode[Int(char)])
         }
 
         var data = intData.serialize()
