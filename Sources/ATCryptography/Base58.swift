@@ -26,6 +26,9 @@ public struct Base58Alphabet: Sendable {
 
     /// Initializes a `Base58Alphabet` with a given character set.
     ///
+    /// Since the ``create(alphabet:)`` method is the only way to invoke the initializer,
+    /// the resulting alphabet is garanteed to have a unique, 58-character ASCII alphabet.
+    ///
     /// - Parameter alphabet: A string containing exactly 58 unique ASCII characters.
     private init(_ alphabet: String) {
         for (i, char) in alphabet.enumerated() {
@@ -77,15 +80,17 @@ public struct Base58Alphabet: Sendable {
 /// Provides Base58 encoding and decoding functionalities.
 public struct Base58 {
 
+    /// The base value used for encoding and decoding.
+    private static let base = BigUInt(58)
+
     /// Encodes binary data into a Base58-encoded string.
     ///
     /// - Parameters:
     ///   - data: The input data to encode.
-    ///   - alphabet: The Base58 alphabet to use (defaults to the standard alphabet).
+    ///   - alphabet: The Base58 alphabet to use Defaults to `.default`.
     /// - Returns: A Base58-encoded string.
     public static func encode(_ data: Data, alphabet: Base58Alphabet = .default) -> String {
         var intData = BigUInt(data)
-        let base = BigUInt(58)
         var result = [Character]()
 
         while intData > 0 {
@@ -96,6 +101,75 @@ public struct Base58 {
 
         result.append(contentsOf: data.prefix(while: { $0 == 0 }).map { _ in alphabet.encode[0] })
         return String(result.reversed())
+    }
+
+    /// Decodes a Base58-encoded string back into binary data.
+    ///
+    /// - Parameters:
+    ///   - string: The Base58-encoded input string.
+    ///   - alphabet: The Base58 alphabet to use. Defaults to `.default`.
+    /// - Returns: The decoded `Data`.
+    ///
+    /// - Throws: `Base58Error.invalidCharacter` if an invalid character is encountered.
+    public static func decode(_ string: String, alphabet: Base58Alphabet = .default) throws -> Data {
+        var intData = BigUInt(0)
+
+        let leadingZeroes = string.prefix(while: { $0 == alphabet.encode[0] }).count
+        let trimmedString = string.dropFirst(leadingZeroes)
+
+        for char in trimmedString {
+            guard let asciiValue = char.asciiValue, asciiValue < 128, alphabet.decode[Int(asciiValue)] != 0xFF else {
+                throw Base58Error.invalidCharacter(character: char)
+            }
+            let index = alphabet.decode[Int(asciiValue)]
+            intData = intData * base + BigUInt(index)
+        }
+
+        var data = intData.serialize()
+        data.insert(contentsOf: Array(repeating: 0, count: leadingZeroes), at: 0)
+        return data
+    }
+
+
+    /// Encodes data with a version byte and checksum using Base58Check encoding.
+    ///
+    /// - Parameters:
+    ///   - data: The data to encode.
+    ///   - version: The version byte to prepend.
+    ///   - alphabet: The Base58 alphabet to use. Defaults to `.default`.
+    /// - Returns: A Base58Check-encoded string.
+    public static func encodeCheck(_ data: Data, version: UInt8, alphabet: Base58Alphabet = .default) -> String {
+        var payload = Data([version]) + data
+        let checksum = payload.checksum()
+        payload.append(contentsOf: checksum)
+
+        return encode(payload, alphabet: alphabet)
+    }
+
+    /// Decodes a Base58Check-encoded string into its original data and version byte.
+    ///
+    /// - Parameters:
+    ///   - string: The Base58Check-encoded input string.
+    ///   - alphabet: The Base58 alphabet to use (defaults to the standard alphabet).
+    /// - Returns: A tuple containing the version byte and the decoded data.
+    ///
+    /// - Throws: `Base58Error.invalidChecksum` if the checksum validation fails.
+    public static func decodeCheck(_ string: String, alphabet: Base58Alphabet = .default) throws -> (version: UInt8, payload: Data) {
+        let decoded = try decode(string, alphabet: alphabet)
+        guard decoded.count > 4 else { throw Base58Error.invalidChecksum }
+
+        let payload = decoded.dropLast(4)
+        let checksum = decoded.suffix(4)
+
+        if payload.checksum() != checksum {
+            throw Base58Error.invalidChecksum
+        }
+
+        guard let version = payload.first else {
+            throw Base58Error.invalidChecksum
+        }
+
+        return (version, payload.dropFirst())
     }
 }
 
