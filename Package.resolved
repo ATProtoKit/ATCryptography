@@ -1,15 +1,6 @@
 {
-  "originHash" : "a7a698d066586a557440fbd5cc0c2e3220f3019a386bd3944e9ea7901ce33ec9",
+  "originHash" : "2619cb313f06c53788b6fe60bc8d7918e31a9cb073dcc3535b1104cbb9dae306",
   "pins" : [
-    {
-      "identity" : "base58swift",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/ATProtoKit/Base58Swift.git",
-      "state" : {
-        "revision" : "3ba16c02089401c817b631ffc33ca8f022a41538",
-        "version" : "2.1.16"
-      }
-    },
     {
       "identity" : "bigint",
       "kind" : "remoteSourceControl",
