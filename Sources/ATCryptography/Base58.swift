@@ -74,6 +74,31 @@ public struct Base58Alphabet: Sendable {
     public static let `default` = Base58Alphabet("123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz")
 }
 
+/// Provides Base58 encoding and decoding functionalities.
+public struct Base58 {
+
+    /// Encodes binary data into a Base58-encoded string.
+    ///
+    /// - Parameters:
+    ///   - data: The input data to encode.
+    ///   - alphabet: The Base58 alphabet to use (defaults to the standard alphabet).
+    /// - Returns: A Base58-encoded string.
+    public static func encode(_ data: Data, alphabet: Base58Alphabet = .default) -> String {
+        var intData = BigUInt(data)
+        let base = BigUInt(58)
+        var result = [Character]()
+
+        while intData > 0 {
+            let (quotient, remainder) = intData.quotientAndRemainder(dividingBy: base)
+            result.append(alphabet.encode[Int(remainder)])
+            intData = quotient
+        }
+
+        result.append(contentsOf: data.prefix(while: { $0 == 0 }).map { _ in alphabet.encode[0] })
+        return String(result.reversed())
+    }
+}
+
 /// An error type related to Base58.
 public enum Base58Error: Error, LocalizedError {
 
