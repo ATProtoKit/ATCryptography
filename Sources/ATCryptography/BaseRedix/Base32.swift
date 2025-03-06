@@ -67,6 +67,11 @@ public struct Base32 {
     }
 
     /// Internal method for encoding using a given alphabet.
+    ///
+    /// - Parameters:
+    ///   - data: The data object to encode.
+    ///   - alphabet: The alphabet used for encoding the data.
+    ///   - Returns: A `String` object, encoded in Base32 (in upper or lowercase.
     private static func encode(_ data: Data, using alphabet: [Character]) -> String {
         var output = ""
         var buffer: UInt32 = 0
