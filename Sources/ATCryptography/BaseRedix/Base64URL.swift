@@ -14,7 +14,7 @@ public struct Base64URL {
     ///
     /// - Parameter data: The `Data` to encode.
     /// - Returns: The Base64URL-encoded `String` (without padding).
-    public func encodeURL(_ data: Data) -> String {
+    public static func encodeURL(_ data: Data) -> String {
         return data.base64EncodedString()
             .replacingOccurrences(of: "+", with: "-")
             .replacingOccurrences(of: "/", with: "_")
@@ -25,7 +25,7 @@ public struct Base64URL {
     ///
     /// - Parameter string: The Base64URL string to decode (must not include padding).
     /// - Returns: The decoded `Data`, or `nil` if decoding fails.
-    public func decode(_ string: String) -> Data? {
+    public static func decode(_ string: String) -> Data? {
         // Reject input containing `=` padding characters
         guard !string.contains("=") else { return nil }
 

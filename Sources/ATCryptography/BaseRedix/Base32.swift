@@ -23,7 +23,7 @@ public struct Base32 {
     ///
     /// - Parameter data: The `Data` to encode.
     /// - Returns: The Base32-encoded `String` in lowercase.
-    public func encode(_ data: Data) -> String {
+    public static func encode(_ data: Data) -> String {
         return encode(data, using: Base32.base32Alphabet)
     }
 
@@ -31,7 +31,7 @@ public struct Base32 {
     ///
     /// - Parameter data: The `Data` to encode.
     /// - Returns: The Base32-encoded `String` in uppercase.
-    public func encodeUpper(_ data: Data) -> String {
+    public static func encodeUpper(_ data: Data) -> String {
         return encode(data, using: Base32.base32AlphabetUpper)
     }
 
@@ -41,7 +41,7 @@ public struct Base32 {
     /// - Returns: The decoded `Data`, or `nil` if decoding fails.
     ///
     /// - Note: Ignores case and accepts padding (`=`), but only at the end.
-    public func decode(_ string: String) -> Data? {
+    public static func decode(_ string: String) -> Data? {
         let normalizedString = string.uppercased()
         let alphabet = Base32.base32AlphabetUpper
 
@@ -67,7 +67,7 @@ public struct Base32 {
     }
 
     /// Internal method for encoding using a given alphabet.
-    private func encode(_ data: Data, using alphabet: [Character]) -> String {
+    private static func encode(_ data: Data, using alphabet: [Character]) -> String {
         var output = ""
         var buffer: UInt32 = 0
         var bufferSize = 0

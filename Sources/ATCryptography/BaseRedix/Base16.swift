@@ -14,7 +14,7 @@ public struct Base16 {
     ///
     /// - Parameter data: The input data to encode.
     /// - Returns: The encoded `String` in Base16.
-    public func encode(_ data: Data) -> String {
+    public static func encode(_ data: Data) -> String {
         let input = data.map { String(format: "%02x", $0) }.joined()
     }
 
@@ -22,7 +22,7 @@ public struct Base16 {
     ///
     /// - Parameter data: The input data to encode.
     /// - Returns: The encoded `String` in uppercase Base16.
-    public func encodeUpper(_ data: Data) -> String {
+    public static func encodeUpper(_ data: Data) -> String {
         return data.map { String(format: "%02X", $0) }.joined()
     }
 
@@ -34,7 +34,7 @@ public struct Base16 {
     /// - Note: The input string must contain an even number of characters
     ///   and only consist of valid hexadecimal digits (0-9, A-F, a-f). If
     ///   these conditions are not met, the function returns `nil`.
-    public func decode(_ string: String) -> Data? {
+    public static func decode(_ string: String) -> Data? {
         let length = string.count
         guard length % 2 == 0 else { return nil }
 
