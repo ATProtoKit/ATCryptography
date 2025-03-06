@@ -21,33 +21,33 @@ public struct Base32 {
 
     /// Encodes binary data into a Base32 string (lowercase).
     ///
-    /// - Parameter data: The `Data` to encode.
+    /// - Parameter bytes: The `[UInt8]` to encode.
     /// - Returns: The Base32-encoded `String` in lowercase.
-    public static func encode(_ data: Data) -> String {
-        return encode(data, using: Base32.base32Alphabet)
+    public static func encode(_ bytes: [UInt8]) -> String {
+        return encode(bytes, using: Base32.base32Alphabet)
     }
 
     /// Encodes binary data into a Base32 string (uppercase).
     ///
-    /// - Parameter data: The `Data` to encode.
+    /// - Parameter bytes: The `[UInt8]` to encode.
     /// - Returns: The Base32-encoded `String` in uppercase.
-    public static func encodeUpper(_ data: Data) -> String {
-        return encode(data, using: Base32.base32AlphabetUpper)
+    public static func encodeUpper(_ bytes: [UInt8]) -> String {
+        return encode(bytes, using: Base32.base32AlphabetUpper)
     }
 
-    /// Decodes a Base32 string into `Data`.
+    /// Decodes a Base32 string into `[UInt8]`.
     ///
     /// - Parameter string: The Base32 string (uppercase or lowercase).
-    /// - Returns: The decoded `Data`, or `nil` if decoding fails.
+    /// - Returns: The decoded `[UInt8]`, or `nil` if decoding fails.
     ///
     /// - Note: Ignores case and accepts padding (`=`), but only at the end.
-    public static func decode(_ string: String) -> Data? {
+    public static func decode(_ string: String) -> [UInt8]? {
         let normalizedString = string.uppercased()
         let alphabet = Base32.base32AlphabetUpper
 
         var buffer: UInt32 = 0
         var bufferSize = 0
-        var output = Data()
+        var output: [UInt8] = []
 
         for char in normalizedString {
             guard char != Base32.paddingCharacter, let value = alphabet.firstIndex(of: char) else {
@@ -69,15 +69,15 @@ public struct Base32 {
     /// Internal method for encoding using a given alphabet.
     ///
     /// - Parameters:
-    ///   - data: The data object to encode.
+    ///   - bytes: The `[UInt8]` array to encode.
     ///   - alphabet: The alphabet used for encoding the data.
-    ///   - Returns: A `String` object, encoded in Base32 (in upper or lowercase.
-    private static func encode(_ data: Data, using alphabet: [Character]) -> String {
+    ///   - Returns: A `String` object, encoded in Base32 (in upper or lowercase).
+    private static func encode(_ bytes: [UInt8], using alphabet: [Character]) -> String {
         var output = ""
         var buffer: UInt32 = 0
         var bufferSize = 0
 
-        for byte in data {
+        for byte in bytes {
             buffer = (buffer << 8) | UInt32(byte)
             bufferSize += 8
 
