@@ -18,6 +18,9 @@ import BigInt
 /// Bitcoin-styled alphabet.
 public struct Base58Alphabet: Sendable {
 
+    /// The default Base58 alphabet.
+    public static let `default` = Base58Alphabet("123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz")
+
     /// An array representing the encoding character set.
     public var encode: [UInt8] = Array(repeating: 0, count: 58)
 
@@ -70,9 +73,6 @@ public struct Base58Alphabet: Sendable {
         // If all checks pass, initialize the Base58Alphabet instance
         return Base58Alphabet(alphabet)
     }
-
-    /// The default Base58 alphabet.
-    public static let `default` = Base58Alphabet("123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz")
 }
 
 /// Provides Base58 encoding and decoding functionalities.
