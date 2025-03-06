@@ -62,15 +62,17 @@ struct Multibase: Sendable {
 
                 return [UInt8](data)
             case "u":
-                guard let data = Base64URL.decode(key) else {
+                guard let data = Base64URL.decodeURL(key) else {
                     throw MultibaseError.unsupportedMultibase(multiBase: key)
                 }
 
                 return [UInt8](data)
             case "U":
-                // TODO: Add Base64URLPad
                 do {
-                    let data = try Radix.decodeBase64(key, urlSafe: true, padded: true)
+                    guard let data = Base64URL.decodeURLPad(key) else {
+                        throw MultibaseError.unsupportedMultibase(multiBase: key)
+                    }
+
                     return [UInt8](data)
                 } catch {
                     throw error
@@ -97,13 +99,11 @@ struct Multibase: Sendable {
                 let data = Data(bytes)
                 return "m\(data.base64EncodedString())"
             case .base64url:
-                // TODO: Add Base64URL
-//                let data = Data(bytes)
-                return "u\(Radix.encodeBase64(bytes, urlSafe: true, padded: false))"
+                let data = Data(bytes)
+                return "u\(Base64URL.encodeURL(data))"
             case .base64urlpad:
-                // TODO: Add Base64URLPad
-//                let data = Data(bytes)
-                return "U\(Radix.encodeBase64(bytes, urlSafe: true, padded: true))"
+                let data = Data(bytes)
+                return "U\(Base64URL.encodeURLPad(data))"
         }
     }
 
@@ -135,45 +135,6 @@ struct Multibase: Sendable {
         case base64urlpad
     }
 }
-
-public struct Radix: Sendable {
-
-    /// Decodes a Base64 string into bytes.
-    public static func decodeBase64(_ string: String, urlSafe: Bool, padded: Bool) throws -> [UInt8] {
-        var base64String = string
-        if urlSafe {
-            base64String = base64String.replacingOccurrences(of: "-", with: "+")
-                .replacingOccurrences(of: "_", with: "/")
-        }
-        if padded {
-            while base64String.count % 4 != 0 {
-                base64String.append("=")
-            }
-        }
-
-        guard let data = Data(base64Encoded: base64String) else {
-            throw MultibaseError.unsupportedMultibase(multiBase: string)
-        }
-        return [UInt8](data)
-    }
-
-    /// Encodes bytes into a Base64 string.
-    public static func encodeBase64(_ bytes: [UInt8], urlSafe: Bool, padded: Bool) -> String {
-        var base64 = Data(bytes).base64EncodedString()
-
-        if !padded {
-            base64 = base64.replacingOccurrences(of: "=", with: "")
-        }
-
-        if urlSafe {
-            base64 = base64.replacingOccurrences(of: "+", with: "-")
-                .replacingOccurrences(of: "/", with: "_")
-        }
-
-        return base64
-    }
-}
-
 
 /// Errors related to multibase encoding and decoding.
 enum MultibaseError: Error, CustomStringConvertible {
