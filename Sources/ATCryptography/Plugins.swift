@@ -8,8 +8,8 @@
 import Foundation
 
 /// A collection of supported `did:key` plugins.
-public typealias plugins = [
-    P256Plugin
-    // TODO: Add this in once we have the struct implemented.
-    // P256Plugin
+public let plugins: [any DIDKeyPlugin.Type] = [
+    P256Plugin.self
+    // TODO: Uncomment this when the struct has been implemented.
+//    K256Plugin.self
 ]

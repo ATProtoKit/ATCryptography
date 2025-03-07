@@ -52,7 +52,7 @@ public protocol ExportableKeypair: Keypair {
 /// A protocol representing a plugin for handling `did:key` operations.
 ///
 /// This includes key compression, decompression, and signature verification.
-public protocol DIDKeyPlugin {
+public protocol DIDKeyPlugin: Sendable {
 
     /// The prefix associated with this `did:key` implementation.
     static var prefix: [UInt8] { get }
