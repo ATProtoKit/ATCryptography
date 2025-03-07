@@ -9,7 +9,7 @@ import Foundation
 import CryptoKit
 
 /// A collection of utility functions for handling p256 public key encoding.
-public struct P256KeyEncoding {
+public struct P256Encoding {
 
     /// Compresses an uncompressed p256 public key.
     ///

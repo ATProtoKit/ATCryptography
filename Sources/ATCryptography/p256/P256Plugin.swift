@@ -23,7 +23,7 @@ public struct P256Plugin: DIDKeyPlugin {
     ///   - message: The original message that was signed.
     ///   - signature: The signature to verify.
     ///   - options: Optional verification settings.
-    /// - Returns: `true` if the signature is valid, otherwise `false`.
+    /// - Returns: `true` if the signature is valid, or `false` if not.
     ///
     /// - Throws: An error if the DID is not a valid P-256 `did:key`.
     public static func verifySignature(did: String, message: [UInt8], signature: [UInt8], options: VerifyOptions? = nil) async throws -> Bool {
@@ -38,7 +38,7 @@ public struct P256Plugin: DIDKeyPlugin {
     ///
     /// - Throws: `P256EncodingError.invalidKeyLength` if the key length is incorrect.
     public static func compressPublicKey(_ publicKey: [UInt8]) throws -> [UInt8] {
-        return try P256KeyEncoding.compressPublicKey(publicKey)
+        return try P256Encoding.compressPublicKey(publicKey)
     }
 
     /// Decompresses a compressed p256 public key.
@@ -51,6 +51,6 @@ public struct P256Plugin: DIDKeyPlugin {
     /// \
     ///           `P256EncodingError.keyDecodingFailed` if the key decoding failed.
     public static func decompressPublicKey(_ publicKey: [UInt8]) throws -> [UInt8] {
-        return try P256KeyEncoding.decompressPublicKey(publicKey)
+        return try P256Encoding.decompressPublicKey(publicKey)
     }
 }
