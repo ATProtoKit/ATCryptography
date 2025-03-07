@@ -40,5 +40,5 @@ class ATCryptography {
     /// The ECDSA algorithm used for k256.
     ///
     /// This is mainly used for signing and verifying JSON Web Tokens (JWT).
-    public static let secp256k1JWTAlgorithm: String = "ES256K"
+    public static let k256JWTAlgorithm: String = "ES256K"
 }
