@@ -8,7 +8,7 @@
 import Foundation
 import CryptoKit
 
-/// A collection of utility functions for computing SHA-256 hashes.
+/// A collection of utility methods for computing SHA-256 hashes.
 public struct SHA256Hasher: Sendable {
 
     /// Computes the SHA-256 hash of a given input asynchronously..

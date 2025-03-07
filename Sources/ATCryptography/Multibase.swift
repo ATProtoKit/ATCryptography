@@ -7,7 +7,7 @@
 
 import Foundation
 
-/// A collection of utility functions for handling multibase encoding and decoding.
+/// A collection of utility methods for handling multibase encoding and decoding.
 struct Multibase: Sendable {
 
     /// Converts a multibase-encoded string into raw bytes.
