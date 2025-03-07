@@ -30,8 +30,9 @@ public struct K256Encoding {
 
     /// Decompresses a compressed p256 public key.
     ///
-    /// - Parameter publicKey: The compressed public key as a byte array (33 bytes: `0x02/0x03 || X`).
-    /// - Returns: The uncompressed public key as a byte array (65 bytes: `0x04 || X || Y`).
+    /// - Parameter publicKey: The compressed public key as a byte array. Must have exactly
+    /// 33 bytes.
+    /// - Returns: The uncompressed public key as a 65-byte array.
     ///
     /// - Throws: `EllipticalCurveEncodingError.invalidKeyLength` if the key length is incorrect.
     ///           `EllipticalCurveEncodingError.keyDecodingFailed` if the key decoding failed.
