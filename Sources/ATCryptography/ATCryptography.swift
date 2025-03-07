@@ -21,24 +21,24 @@ import secp256k1
 class ATCryptography {
 
     /// The prefix used to indicate Base58 multibase encoding.
-    static let base58MultibasePrefix: Character = "z"
+    public static let base58MultibasePrefix: Character = "z"
 
     /// The `did:key` prefix.
-    static let didKeyPrefix: String = "did:key:"
+    public static let didKeyPrefix: String = "did:key:"
 
     /// The binary prefix used for p256-based decentralized identifiers (DIDs).
-    static let p256DIDPrefix: [UInt8] = [0x80, 0x24]
+    public static let p256DIDPrefix: [UInt8] = [0x80, 0x24]
 
     /// The binary prefix used for k256-based decentralized identifiers (DIDs).
-    static let k256DIDPrefix: [UInt8] = [0xe7, 0x01]
+    public static let k256DIDPrefix: [UInt8] = [0xe7, 0x01]
 
     /// The ECDSA algorithm used for p256.
     ///
     /// This is mainly used for signing and verifying JSON Web Tokens (JWT).
-    static let p256JWTAlgorithm: String = "ES256"
+    public static let p256JWTAlgorithm: String = "ES256"
 
     /// The ECDSA algorithm used for k256.
     ///
     /// This is mainly used for signing and verifying JSON Web Tokens (JWT).
-    static let secp256k1JWTAlgorithm: String = "ES256K"
+    public static let secp256k1JWTAlgorithm: String = "ES256K"
 }

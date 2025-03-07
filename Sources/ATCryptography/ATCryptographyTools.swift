@@ -8,7 +8,7 @@
 import Foundation
 
 /// Utility functions for handling DIDs, multikeys, and byte arrays in the AT Protocol.
-struct ATCryptographyTools {
+public struct ATCryptographyTools {
 
     /// Extracts the multikey portion from a DID string.
     ///
@@ -16,7 +16,7 @@ struct ATCryptographyTools {
     /// - Returns: The extracted multikey string.
     ///
     /// - Throws: An error if the DID does not have the correct prefix.
-    static func extractMultikey(from did: String) throws -> String {
+    public static func extractMultikey(from did: String) throws -> String {
         guard did.hasPrefix(ATCryptography.didKeyPrefix) else {
             throw ATCryptographyToolsError.invalidDIDPrefix(did: did)
         }
@@ -31,7 +31,7 @@ struct ATCryptographyTools {
     /// - Throws: - `ATCryptographyError.invalidMultikeyPrefix` if the multikey does not have the correct prefix.\
     /// \
     ///           - `ATCryptographyError.invalidBase58Encoding` if decoding fails.
-    static func extractPrefixedBytes(from multikey: String) throws -> [UInt8] {
+    public static func extractPrefixedBytes(from multikey: String) throws -> [UInt8] {
         guard multikey.hasPrefix(String(ATCryptography.base58MultibasePrefix)) else {
             throw ATCryptographyToolsError.invalidMultikeyPrefix(multikey: multikey)
         }
@@ -49,14 +49,14 @@ struct ATCryptographyTools {
     ///   - bytes: The full byte array to check.
     ///   - prefix: The expected prefix as a byte array.
     /// - Returns: `true` if the `bytes` array starts with the given `prefix`, otherwise `false`.
-    static func hasPrefix(bytes: [UInt8], prefix: [UInt8]) -> Bool {
+    public static func hasPrefix(bytes: [UInt8], prefix: [UInt8]) -> Bool {
         guard bytes.count >= prefix.count else { return false }
         return Array(bytes.prefix(prefix.count)) == prefix
     }
 }
 
 /// An error type related to for cryptographic utility functions.
-enum ATCryptographyToolsError: Error, CustomStringConvertible {
+public enum ATCryptographyToolsError: Error, CustomStringConvertible {
 
     /// The decentralized identifier (DID) prefix is incorrect.
     ///
@@ -73,7 +73,7 @@ enum ATCryptographyToolsError: Error, CustomStringConvertible {
     /// - Parameter multikey: The multikey prefix.
     case invalidBase58Encoding(multikey: String)
 
-    var description: String {
+    public var description: String {
         switch self {
             case .invalidDIDPrefix(let did):
                 return "Incorrect prefix for did:key: \(did)"

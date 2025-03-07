@@ -15,7 +15,7 @@ public struct SHA256Hasher: Sendable {
     ///
     /// - Parameter input: The input, which can be either a string or a byte array (`[UInt8]`).
     /// - Returns: The SHA-256 hash as a byte array (`[UInt8]`).
-    static func sha256(_ input: some DataConvertible) async -> [UInt8] {
+    public static func sha256(_ input: some DataConvertible) async -> [UInt8] {
         let data = input.toData() // Convert input outside the Task.
 
         return await Task(priority: .userInitiated) {
@@ -28,7 +28,7 @@ public struct SHA256Hasher: Sendable {
     ///
     /// - Parameter input: The input, which can be either a string or a byte array (`[UInt8]`).
     /// - Returns: The SHA-256 hash as a hexadecimal string.
-    static func sha256Hex(_ input: some DataConvertible) async -> String {
+    public static func sha256Hex(_ input: some DataConvertible) async -> String {
         let data = input.toData()  // Convert input outside the Task.
 
         return await Task(priority: .userInitiated) {
@@ -41,7 +41,7 @@ public struct SHA256Hasher: Sendable {
     ///
     /// - Parameter input: The input, which can be either a string or a byte array (`[UInt8]`).
     /// - Returns: The SHA-256 hash as a byte array (`[UInt8]`).
-    static func sha256(_ input: some DataConvertible) -> [UInt8] {
+    public static func sha256(_ input: some DataConvertible) -> [UInt8] {
         let data = input.toData()
         let hash = SHA256.hash(data: data)
         return Array(hash)
@@ -51,7 +51,7 @@ public struct SHA256Hasher: Sendable {
     ///
     /// - Parameter input: The input, which can be either a string or a byte array (`[UInt8]`).
     /// - Returns: The SHA-256 hash as a hexadecimal string.
-    static func sha256Hex(_ input: some DataConvertible) -> String {
+    public static func sha256Hex(_ input: some DataConvertible) -> String {
         let hashBytes = sha256(input)
         return hashBytes.map { String(format: "%02x", $0) }.joined()
     }
@@ -60,7 +60,7 @@ public struct SHA256Hasher: Sendable {
 /// A protocol that provides a unified way to convert different types into `Data`.
 ///
 /// This is used to allow both `String` and `[UInt8]` to be passed into hash functions seamlessly.
-protocol DataConvertible {
+public protocol DataConvertible {
 
     /// Converts the conforming type into `Data`.
     ///
@@ -69,13 +69,13 @@ protocol DataConvertible {
 }
 
 extension String: DataConvertible {
-    func toData() -> Data {
+    public func toData() -> Data {
         return self.data(using: .utf8) ?? Data()
     }
 }
 
 extension Array: DataConvertible where Element == UInt8 {
-    func toData() -> Data {
+    public func toData() -> Data {
         return Data(self)
     }
 }

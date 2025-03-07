@@ -8,7 +8,7 @@
 import Foundation
 
 /// A collection of utility methods for handling multibase encoding and decoding.
-struct Multibase: Sendable {
+public struct Multibase: Sendable {
 
     /// Converts a multibase-encoded string into raw bytes.
     ///
@@ -16,7 +16,7 @@ struct Multibase: Sendable {
     /// - Returns: The decoded bytes as `[UInt8]`.
     ///
     /// - Throws: `MultibaseError.unsupportedMultibase` if the encoding is not recognized.
-    static func multibaseToBytes(multibase: String) throws -> [UInt8] {
+    public static func multibaseToBytes(multibase: String) throws -> [UInt8] {
         guard let base = multibase.first else {
             throw MultibaseError.unsupportedMultibase(multiBase: multibase)
         }
@@ -82,7 +82,7 @@ struct Multibase: Sendable {
         }
     }
 
-    static func bytesToMultibase(bytes: [UInt8], encoding: MultibaseEncoding) throws -> String {
+    public static func bytesToMultibase(bytes: [UInt8], encoding: MultibaseEncoding) throws -> String {
         switch encoding {
             case .base16:
                 return "f\(Base16.encode(bytes))"
@@ -108,7 +108,7 @@ struct Multibase: Sendable {
     }
 
     /// Supported multibase encodings.
-    enum MultibaseEncoding: String {
+    public enum MultibaseEncoding: String {
 
         /// Base16 Encoding.
         case base16
@@ -137,14 +137,14 @@ struct Multibase: Sendable {
 }
 
 /// Errors related to multibase encoding and decoding.
-enum MultibaseError: Error, CustomStringConvertible {
+public enum MultibaseError: Error, CustomStringConvertible {
 
     /// The multibase encoding is unsupported.
     ///
     /// - Parameter multibase: The multibase encoding value.
     case unsupportedMultibase(multiBase: String)
 
-    var description: String {
+    public var description: String {
         switch self {
             case .unsupportedMultibase(let value):
                 return "Unsupported multibase encoding: \(value)"

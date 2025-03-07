@@ -11,7 +11,7 @@ import Foundation
 ///
 /// Implementing types must specify the JSON Web Token (JWT) signing algorithm and provide a
 /// method for signing a given message.
-protocol Signer {
+public protocol Signer {
 
     /// The JSON Web Token (JWT) signing algorithm used.
     var jwtAlgorithm: String { get }
@@ -26,7 +26,7 @@ protocol Signer {
 }
 
 /// A protocol for entities that can provide a decentralized identifier (DID).
-protocol DIDable {
+public protocol DIDable {
 
     /// Returns the decentralized identifier (DID) of the implementing entity.
     func did() -> String
@@ -36,10 +36,10 @@ protocol DIDable {
 ///
 /// This extends `Signer` and `DIDable`, meaning any conforming type must implement
 /// both signing capabilities and DID retrieval.
-protocol Keypair: Signer, DIDable {}
+public protocol Keypair: Signer, DIDable {}
 
 /// A protocol for cryptographic key pairs that support exporting their key material.
-protocol ExportableKeypair: Keypair {
+public protocol ExportableKeypair: Keypair {
 
     /// Exports the keypair in a serialized format.
     ///
@@ -52,13 +52,13 @@ protocol ExportableKeypair: Keypair {
 /// A structure representing a plugin for handling `did:key` operations.
 ///
 /// This includes key compression, decompression, and signature verification.
-struct DIDKeyPlugin {
+public struct DIDKeyPlugin {
 
     /// The prefix associated with this `did:key` implementation.
-    let prefix: [UInt8]
+    public let prefix: [UInt8]
 
     /// The JSON Web Token (JWT) algorithm associated with this key type.
-    let jwtAlgorithm: String
+    public let jwtAlgorithm: String
 
     /// Verifies a signature given a decentralized identifier (DID), message, and signed data.
     ///
@@ -70,36 +70,36 @@ struct DIDKeyPlugin {
     /// - Returns: `true` if the signature is valid, otherwise `false`.
     ///
     /// - Throws: An error if verification fails.
-    let verifySignature: (_ did: String, _ message: [UInt8], _ signature: [UInt8], _ options: VerifyOptions?) async throws -> Bool
+    public let verifySignature: (_ did: String, _ message: [UInt8], _ signature: [UInt8], _ options: VerifyOptions?) async throws -> Bool
 
     /// Compresses an uncompressed public key.
     ///
     /// - Parameter uncompressed: The uncompressed public key.
     /// - Returns: The compressed public key.
-    let compressPublicKey: (_ uncompressed: [UInt8]) -> [UInt8]
+    public let compressPublicKey: (_ uncompressed: [UInt8]) -> [UInt8]
 
     /// Decompresses a compressed public key.
     ///
     /// - Parameter compressed: The compressed public key.
     /// - Returns: The decompressed public key.
-    let decompressPublicKey: (_ compressed: [UInt8]) -> [UInt8]
+    public let decompressPublicKey: (_ compressed: [UInt8]) -> [UInt8]
 }
 
 /// Options for signature verification.
 ///
 /// This includes optional settings for allowing malleable signatures.
-struct VerifyOptions {
+public struct VerifyOptions {
 
     /// Whether to allow malleable signatures.
     ///
     /// If `true`, the verification process will not strictly reject signatures
     /// that have a malleable representation.
-    let areMalleableSignaturesAllowed: Bool?
+    public let areMalleableSignaturesAllowed: Bool?
 
     /// Initializes verification options.
     ///
     /// - Parameter allowMalleableSig: Whether to allow malleable signatures (defaults to `false`).
-    init(areMalleableSignaturesAllowed: Bool? = false) {
+    public init(areMalleableSignaturesAllowed: Bool? = false) {
         self.areMalleableSignaturesAllowed = areMalleableSignaturesAllowed
     }
 }
