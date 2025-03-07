@@ -29,7 +29,7 @@ public protocol Signer {
 public protocol DIDable {
 
     /// Returns the decentralized identifier (DID) of the implementing entity.
-    func did() -> String
+    func did() throws -> String
 }
 
 /// A protocol for cryptographic key pairs that can sign messages and return their DID.

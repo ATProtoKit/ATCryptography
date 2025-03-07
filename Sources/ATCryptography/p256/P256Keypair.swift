@@ -81,7 +81,7 @@ public struct P256Keypair: ExportableKeypair, Sendable {
     /// Returns the decentralized identifier (DID) for this keypair.
     ///
     /// - Returns: The formatted DID string.
-    public func did() -> String {
+    public func did() throws -> String {
         // TODO: Uncomment this method once the appropriate method has been created.
 //        return DID.formatDIDKey(jwtAlgorithm: jwtAlgorithm, keyBytes: publicKeyBytes())
         return ""
