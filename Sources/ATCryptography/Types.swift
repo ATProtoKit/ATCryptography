@@ -49,40 +49,48 @@ public protocol ExportableKeypair: Keypair {
     func export() async throws -> [UInt8]
 }
 
-/// A structure representing a plugin for handling `did:key` operations.
+/// A protocol representing a plugin for handling `did:key` operations.
 ///
 /// This includes key compression, decompression, and signature verification.
-public struct DIDKeyPlugin {
+public protocol DIDKeyPlugin {
 
     /// The prefix associated with this `did:key` implementation.
-    public let prefix: [UInt8]
+    static var prefix: [UInt8] { get }
 
     /// The JSON Web Token (JWT) algorithm associated with this key type.
-    public let jwtAlgorithm: String
+    static var jwtAlgorithm: String { get }
 
-    /// Verifies a signature given a decentralized identifier (DID), message, and signed data.
+    /// Verifies a decentralized identifier (DID)-based signature.
     ///
     /// - Parameters:
-    ///   - did: The decentralized identifier (DID) associated with the public key.
+    ///   - did: The DID of the signer.
     ///   - message: The original message that was signed.
-    ///   - signature: The provided signature to verify.
+    ///   - signature: The signature to verify.
     ///   - options: Optional verification settings.
     /// - Returns: `true` if the signature is valid, otherwise `false`.
     ///
-    /// - Throws: An error if verification fails.
-    public let verifySignature: (_ did: String, _ message: [UInt8], _ signature: [UInt8], _ options: VerifyOptions?) async throws -> Bool
+    /// - Throws: An error if the DID is not a valid P-256 `did:key`.
+    static func verifySignature(did: String, message: [UInt8], signature: [UInt8], options: VerifyOptions?) async throws -> Bool
 
-    /// Compresses an uncompressed public key.
+    /// Compresses an uncompressed p256 public key.
     ///
-    /// - Parameter uncompressed: The uncompressed public key.
-    /// - Returns: The compressed public key.
-    public let compressPublicKey: (_ uncompressed: [UInt8]) -> [UInt8]
+    /// - Parameter publicKey: The uncompressed public key as a byte array. Must be exactly
+    /// 65 bytes.
+    /// - Returns: The compressed public key as a 33-byte array.
+    ///
+    /// - Throws: `P256EncodingError.invalidKeyLength` if the key length is incorrect.
+    static func compressPublicKey(_ publicKey: [UInt8]) throws -> [UInt8]
 
-    /// Decompresses a compressed public key.
+    /// Decompresses a compressed p256 public key.
     ///
-    /// - Parameter compressed: The compressed public key.
-    /// - Returns: The decompressed public key.
-    public let decompressPublicKey: (_ compressed: [UInt8]) -> [UInt8]
+    /// - Parameter publicKey: The compressed public key as a byte array. Must be exactly
+    /// 33 bytes.
+    /// - Returns: The uncompressed public key as a 65-byte array.
+    ///
+    /// - Throws: `P256EncodingError.invalidKeyLength` if the key length is incorrect.\
+    /// \
+    ///           `P256EncodingError.keyDecodingFailed` if the key decoding failed.
+    static func decompressPublicKey(_ publicKey: [UInt8]) throws -> [UInt8]
 }
 
 /// Options for signature verification.
