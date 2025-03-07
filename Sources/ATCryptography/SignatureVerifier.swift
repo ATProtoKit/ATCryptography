@@ -66,33 +66,3 @@ public struct SignatureVerifier {
         return try await verifySignature(didKey: didKey, data: dataBytes, signature: signatureBytes, options: options)
     }
 }
-
-/// Errors related to signature verification.
-public enum SignatureVerificationError: Error, CustomStringConvertible {
-
-    /// The provided key algorithm does not match the expected algorithm.
-    ///
-    /// - Parameters:
-    ///   - expected: The `String` value that was expected.
-    ///   - actual: The `String` value that was actually given.
-    case mismatchedAlgorithm(expected: String, actual: String)
-
-    /// The key type or algorithm is unsupported.
-    case unsupportedAlgorithm(algorithm: String)
-
-    /// The input encoding is invalid.
-    ///
-    /// - Parameter input: The reason the encoding was invalid.
-    case invalidEncoding(reason: String)
-
-    public var description: String {
-        switch self {
-            case .mismatchedAlgorithm(let expected, let actual):
-                return "Expected key algorithm. Expected '\(expected)', but got '\(actual)'."
-            case .unsupportedAlgorithm(let algorithm):
-                return "Unsupported signature algorithm: \(algorithm)."
-            case .invalidEncoding(let reason):
-                return "Invalid encoding: \(reason)."
-        }
-    }
-}

@@ -73,24 +73,4 @@ public struct SecureRandom {
 
         return normalized + low
     }
-
-}
-
-/// An error type related to secure random byte generation.
-public enum SecureRandomError: Error, LocalizedError {
-
-    /// Failed to generate secure random bytes.
-    case failedToGenerateRandomBytes
-
-    /// The requested range is invalid (i.e., `low` is greater than or equal to `high`).
-    case invalidRange(low: Int, high: Int)
-
-    public var description: String {
-        switch self {
-            case .invalidRange(let low, let high):
-                return "Invalid range: low (\(low)) must be less than high (\(high))"
-            case .failedToGenerateRandomBytes:
-                return "Failed to generate secure random bytes."
-        }
-    }
 }

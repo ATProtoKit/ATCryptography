@@ -54,33 +54,3 @@ public struct ATCryptographyTools {
         return Array(bytes.prefix(prefix.count)) == prefix
     }
 }
-
-/// An error type related to for cryptographic utility functions.
-public enum ATCryptographyToolsError: Error, CustomStringConvertible {
-
-    /// The decentralized identifier (DID) prefix is incorrect.
-    ///
-    /// - Parameter did: The decentralized identifier (DID) prefix.
-    case invalidDIDPrefix(did: String)
-
-    /// The multikey prefix is invalid.
-    ///
-    /// - Parameter multikey: The multikey prefix.
-    case invalidMultikeyPrefix(multikey: String)
-
-    /// The encoding of Base58 is invalid.
-    ///
-    /// - Parameter multikey: The multikey prefix.
-    case invalidBase58Encoding(multikey: String)
-
-    public var description: String {
-        switch self {
-            case .invalidDIDPrefix(let did):
-                return "Incorrect prefix for did:key: \(did)"
-            case .invalidMultikeyPrefix(let multikey):
-                return "Incorrect prefix for multikey: \(multikey)"
-            case .invalidBase58Encoding(let multikey):
-                return "Invalid Base58 encoding in multikey: \(multikey)"
-        }
-    }
-}

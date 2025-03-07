@@ -25,7 +25,7 @@ public struct P256Operations {
         let prefixedBytes = try ATCryptographyTools.extractPrefixedBytes(from: ATCryptographyTools.extractMultikey(from: did))
 
         guard ATCryptographyTools.hasPrefix(bytes: prefixedBytes, prefix: ATCryptography.p256DIDPrefix) else {
-            throw P256OperationsError.invalidP256DID(did: did)
+            throw EllipticalCurveOperationsError.invalidP256DID(did: did)
         }
 
         let keyBytes = Array(prefixedBytes.dropFirst(ATCryptography.p256DIDPrefix.count))
@@ -47,14 +47,14 @@ public struct P256Operations {
         let hashedData = await SHA256Hasher.sha256(data)
 
         guard let publicKey = try? P256.Signing.PublicKey(rawRepresentation: publicKey) else {
-            throw P256OperationsError.invalidPublicKey
+            throw EllipticalCurveOperationsError.invalidPublicKey
         }
 
         let signatureData = Data(signature)
 
         // If malleable signatures are not allowed, enforce compact format.
         if !allowMalleable, !isCompactFormat(signature) {
-            throw P256OperationsError.invalidSignatureFormat
+            throw EllipticalCurveOperationsError.invalidSignatureFormat
         }
 
         guard let parsedSignature = try? P256.Signing.ECDSASignature(derRepresentation: signatureData) else {
@@ -79,31 +79,5 @@ public struct P256Operations {
         }
 
         return parsedSignature.rawRepresentation == Data(signature)
-    }
-}
-
-/// Errors related to p256 operations.
-public enum P256OperationsError: Error, CustomStringConvertible {
-
-    /// The given DID is not a valid p265`did:key`.
-    ///
-    /// - Parameter did: The invalid decentralized identifier (DID).
-    case invalidP256DID(did: String)
-
-    /// The provided public key is invalid.
-    case invalidPublicKey
-
-    /// The provided signature is in an invalid format.
-    case invalidSignatureFormat
-
-    public var description: String {
-        switch self {
-            case .invalidP256DID(let did):
-                return "DID '\(did)' is not a valid p256 did:key."
-            case .invalidPublicKey:
-                return "Invalid public key."
-            case .invalidSignatureFormat:
-                return "Invalid signature format."
-        }
     }
 }

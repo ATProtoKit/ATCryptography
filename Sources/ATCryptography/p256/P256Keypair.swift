@@ -106,22 +106,8 @@ public struct P256Keypair: ExportableKeypair, Sendable {
     /// - Throws: `P256KeypairError.privateKeyNotExportable` if the keypair is not exportable.
     public func export() async throws -> [UInt8] {
         guard isExportable else {
-            throw P256KeypairError.privateKeyNotExportable
+            throw EllipticalCurveKeypairError.privateKeyNotExportable
         }
         return Array(privateKey.rawRepresentation)
-    }
-}
-
-/// Errors related to `P256Keypair`.
-public enum P256KeypairError: Error, CustomStringConvertible {
-
-    /// The private key cannot be exported.
-    case privateKeyNotExportable
-
-    public var description: String {
-        switch self {
-            case .privateKeyNotExportable:
-                return "Private key is not exportable."
-        }
     }
 }

@@ -135,19 +135,3 @@ public struct Multibase: Sendable {
         case base64urlpad
     }
 }
-
-/// Errors related to multibase encoding and decoding.
-public enum MultibaseError: Error, CustomStringConvertible {
-
-    /// The multibase encoding is unsupported.
-    ///
-    /// - Parameter multibase: The multibase encoding value.
-    case unsupportedMultibase(multiBase: String)
-
-    public var description: String {
-        switch self {
-            case .unsupportedMultibase(let value):
-                return "Unsupported multibase encoding: \(value)"
-        }
-    }
-}
