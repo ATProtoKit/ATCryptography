@@ -82,9 +82,11 @@ public struct P256Keypair: ExportableKeypair, Sendable {
     ///
     /// - Returns: The formatted DID string.
     public func did() throws -> String {
-        // TODO: Uncomment this method once the appropriate method has been created.
-//        return DID.formatDIDKey(jwtAlgorithm: jwtAlgorithm, keyBytes: publicKeyBytes())
-        return ""
+        do {
+            return try DIDKey.formatDIDKey(jwtAlgorithm: jwtAlgorithm, keyBytes: publicKeyBytes())
+        } catch {
+            throw error
+        }
     }
 
     /// Signs a message using the private key.
