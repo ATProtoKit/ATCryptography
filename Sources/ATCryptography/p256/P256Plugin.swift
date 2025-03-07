@@ -25,7 +25,7 @@ public struct P256Plugin: DIDKeyPlugin {
     ///   - options: Optional verification settings.
     /// - Returns: `true` if the signature is valid, or `false` if not.
     ///
-    /// - Throws: An error if the DID is not a valid P-256 `did:key`.
+    /// - Throws: An error if the DID is not a valid p256 `did:key`.
     public static func verifySignature(did: String, message: [UInt8], signature: [UInt8], options: VerifyOptions? = nil) async throws -> Bool {
         return try await P256Operations.verifyDIDSignature(did: did, data: message, signature: signature, options: options)
     }
@@ -36,7 +36,7 @@ public struct P256Plugin: DIDKeyPlugin {
     /// 65 bytes.
     /// - Returns: The compressed public key as a 33-byte array.
     ///
-    /// - Throws: `P256EncodingError.invalidKeyLength` if the key length is incorrect.
+    /// - Throws: `EllipticalCurveEncodingError.invalidKeyLength` if the key length is incorrect.
     public static func compressPublicKey(_ publicKey: [UInt8]) throws -> [UInt8] {
         return try P256Encoding.compressPublicKey(publicKey)
     }
@@ -47,9 +47,9 @@ public struct P256Plugin: DIDKeyPlugin {
     /// 33 bytes.
     /// - Returns: The uncompressed public key as a 65-byte array.
     ///
-    /// - Throws: `P256EncodingError.invalidKeyLength` if the key length is incorrect.\
+    /// - Throws: `EllipticalCurveEncodingError.invalidKeyLength` if the key length is incorrect.\
     /// \
-    ///           `P256EncodingError.keyDecodingFailed` if the key decoding failed.
+    ///           `EllipticalCurveEncodingError.keyDecodingFailed` if the key decoding failed.
     public static func decompressPublicKey(_ publicKey: [UInt8]) throws -> [UInt8] {
         return try P256Encoding.decompressPublicKey(publicKey)
     }
