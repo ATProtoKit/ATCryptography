@@ -77,10 +77,10 @@ public enum EllipticalCurveKeypairError: Error, CustomStringConvertible {
 /// Errors related to p256 and k256 operations.
 public enum EllipticalCurveOperationsError: Error, CustomStringConvertible {
 
-    /// The given DID is not a valid p265`did:key`.
+    /// The given DID is not a valid p265 or k256 `did:key`.
     ///
     /// - Parameter did: The invalid decentralized identifier (DID).
-    case invalidP256DID(did: String)
+    case invalidEllipticalCurveDID(did: String)
 
     /// The provided public key is invalid.
     case invalidPublicKey
@@ -90,8 +90,8 @@ public enum EllipticalCurveOperationsError: Error, CustomStringConvertible {
 
     public var description: String {
         switch self {
-            case .invalidP256DID(let did):
-                return "DID '\(did)' is not a valid p256 did:key."
+            case .invalidEllipticalCurveDID(let did):
+                return "DID '\(did)' is not a valid elliptical curve did:key."
             case .invalidPublicKey:
                 return "Invalid public key."
             case .invalidSignatureFormat:

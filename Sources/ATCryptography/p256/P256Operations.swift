@@ -20,12 +20,12 @@ public struct P256Operations {
     ///   - options: Optional verification settings. Optional. Defaults to `nil`.
     /// - Returns: `true` if the signature is valid, otherwise `false`.
     ///
-    /// - Throws: An error if the DID is not a valid P-256 `did:key`.
+    /// - Throws: An error if the DID is not a valid p256 `did:key`.
     public static func verifyDIDSignature(did: String, data: [UInt8], signature: [UInt8], options: VerifyOptions? = nil) async throws -> Bool {
         let prefixedBytes = try ATCryptographyTools.extractPrefixedBytes(from: ATCryptographyTools.extractMultikey(from: did))
 
         guard ATCryptographyTools.hasPrefix(bytes: prefixedBytes, prefix: ATCryptography.p256DIDPrefix) else {
-            throw EllipticalCurveOperationsError.invalidP256DID(did: did)
+            throw EllipticalCurveOperationsError.invalidEllipticalCurveDID(did: did)
         }
 
         let keyBytes = Array(prefixedBytes.dropFirst(ATCryptography.p256DIDPrefix.count))
@@ -69,7 +69,7 @@ public struct P256Operations {
     /// - Parameter signature: The signature to check.
     /// - Returns: `true` if the signature is in compact format, otherwise `false`.
     public static func isCompactFormat(_ signature: [UInt8]) -> Bool {
-        // ECDSA P-256 signatures should be exactly 64 bytes in compact form.
+        // ECDSA p256 signatures should be exactly 64 bytes in compact form.
         guard signature.count == 64 else { return false }
 
         // Attempt to create a CryptoKit ECDSA signature.
