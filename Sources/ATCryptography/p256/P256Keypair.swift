@@ -8,7 +8,7 @@
 import Foundation
 @preconcurrency import CryptoKit
 
-/// A cryptographic keypair for P-256, implementing the `Keypair` protocol.
+/// A cryptographic keypair for p256.
 public struct P256Keypair: ExportableKeypair, Sendable {
 
     /// The JSON Web Token (JWT) signing algorithm used.
