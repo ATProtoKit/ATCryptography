@@ -20,7 +20,7 @@ public struct DIDKey {
         let prefixedBytes = try ATCryptographyTools.extractPrefixedBytes(from: multikey)
 
         guard let pluginType = plugins.first(where: { ATCryptographyTools.hasPrefix(bytes: prefixedBytes, prefix: $0.prefix) }) else {
-            throw DIDError.unsupportedKeyType
+            throw DIDKeyError.unsupportedKeyType
         }
 
         let keyBytes = try pluginType.decompressPublicKey(Array(prefixedBytes.dropFirst(pluginType.prefix.count)))
@@ -38,7 +38,7 @@ public struct DIDKey {
     /// - Throws: `DIDError.unsupportedKeyType` if the key type is not recognized.
     public static func formatMultikey(jwtAlgorithm: String, keyBytes: [UInt8]) throws -> String {
         guard let plugin = plugins.first(where: { $0.jwtAlgorithm == jwtAlgorithm }) else {
-            throw DIDError.unsupportedKeyType
+            throw DIDKeyError.unsupportedKeyType
         }
 
         let prefixedBytes = plugin.prefix + (try plugin.compressPublicKey(keyBytes))
@@ -78,22 +78,4 @@ public struct ParsedMultikey {
 
     /// The decompressed public key bytes.
     public let keyBytes: [UInt8]
-}
-
-/// Errors related to DID operations.
-public enum DIDError: Error, CustomStringConvertible {
-    /// The key type is not supported.
-    case unsupportedKeyType
-
-    /// The DID has an invalid prefix.
-    case invalidDIDPrefix
-
-    public var description: String {
-        switch self {
-            case .unsupportedKeyType:
-                return "Unsupported key type."
-            case .invalidDIDPrefix:
-                return "Invalid DID prefix."
-        }
-    }
 }

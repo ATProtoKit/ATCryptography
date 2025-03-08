@@ -119,6 +119,24 @@ public enum SecureRandomError: Error, LocalizedError {
     }
 }
 
+/// Errors related to `did:key` operations.
+public enum DIDKeyError: Error, CustomStringConvertible {
+    /// The key type is not supported.
+    case unsupportedKeyType
+
+    /// The DID has an invalid prefix.
+    case invalidDIDPrefix
+
+    public var description: String {
+        switch self {
+            case .unsupportedKeyType:
+                return "Unsupported key type."
+            case .invalidDIDPrefix:
+                return "Invalid DID prefix."
+        }
+    }
+}
+
 /// Errors related to multibase encoding and decoding.
 public enum MultibaseError: Error, CustomStringConvertible {
 
