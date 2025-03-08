@@ -42,6 +42,7 @@ public struct DIDKey {
         }
 
         let prefixedBytes = plugin.prefix + (try plugin.compressPublicKey(keyBytes))
+
         return String(ATCryptography.base58MultibasePrefix) + Base58.encode(Data(prefixedBytes))
     }
 

@@ -20,6 +20,7 @@ public struct ATCryptographyTools {
         guard did.hasPrefix(ATCryptography.didKeyPrefix) else {
             throw ATCryptographyToolsError.invalidDIDPrefix(did: did)
         }
+
         return String(did.dropFirst(ATCryptography.didKeyPrefix.count))
     }
 
