@@ -100,7 +100,7 @@ public struct P256Keypair: ExportableKeypair, Sendable {
     public func sign(message: [UInt8]) async throws -> [UInt8] {
         let hash = await SHA256Hasher.sha256(message)
         let signature = try privateKey.signature(for: Data(hash))
-        return Array(signature.derRepresentation) // Converts to DER format.
+        return Array(signature.rawRepresentation)
     }
 
     /// Exports the private key in raw byte format.
