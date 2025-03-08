@@ -7,6 +7,7 @@
 
 import Foundation
 import CryptoKit
+import BigInt
 
 /// A collection of cryptographic operations related to p256.
 public struct P256Operations {
@@ -46,7 +47,7 @@ public struct P256Operations {
         let allowMalleable = options?.areMalleableSignaturesAllowed ?? false
         let hashedData = await SHA256Hasher.sha256(data)
 
-        guard let publicKey = try? P256.Signing.PublicKey(rawRepresentation: publicKey) else {
+        guard let publicKey = try? P256.Signing.PublicKey(compactRepresentation: publicKey) else {
             throw EllipticalCurveOperationsError.invalidPublicKey
         }
 
@@ -57,11 +58,15 @@ public struct P256Operations {
             throw EllipticalCurveOperationsError.invalidSignatureFormat
         }
 
-        guard let parsedSignature = try? P256.Signing.ECDSASignature(derRepresentation: signatureData) else {
+        guard let parsedSignature = try? P256.Signing.ECDSASignature(rawRepresentation: signatureData) else {
             return false
         }
 
-        return publicKey.isValidSignature(parsedSignature, for: Data(hashedData))
+        guard let correctedSignature = Self.normalizeSignature(signature: parsedSignature) else {
+            return false
+        }
+
+        return publicKey.isValidSignature(correctedSignature, for: Data(hashedData))
     }
 
     /// Checks if a signature is in compact format.
@@ -70,14 +75,61 @@ public struct P256Operations {
     /// - Returns: `true` if the signature is in compact format, otherwise `false`.
     public static func isCompactFormat(_ signature: [UInt8]) -> Bool {
         // ECDSA p256 signatures should be exactly 64 bytes in compact form.
-        guard signature.count == 64 else { return false }
+        do {
+            // Attempt to initialize a P-256 signature from compact representation.
+            let ecdsaSignature = try P256.Signing.ECDSASignature(rawRepresentation: signature)
 
-        // Attempt to create a CryptoKit ECDSA signature.
-        guard let parsedSignature = try? P256.Signing.ECDSASignature(rawRepresentation: signature) else {
-            // If it can't be parsed, it's not a valid compact signature.
+            // Convert back to raw representation and compare with input
+            return ecdsaSignature.rawRepresentation == signature.toData()
+        } catch {
             return false
         }
+    }
 
-        return parsedSignature.rawRepresentation == Data(signature)
+    /// Creates a "low-S" variant of the signature, if required.
+    ///
+    /// - Parameter signature: The signature itself.
+    /// - Returns: The signature in its "low-S" variant, or `nil` if the signature fails to
+    /// be created.
+    public static func normalizeSignature(signature: P256.Signing.ECDSASignature) -> P256.Signing.ECDSASignature? {
+        let rawSignature = signature.derRepresentation
+
+        // Since CryptoKit doesn't have built-in support for exposing the curve order or retrieving the "low-S" variant,
+        // we're making our own.
+        guard let curveOrder = BigInt("FFFFFFFF00000000FFFFFFFFFFFFFFFFBCE6FAADA7179E84F3B9CAC2FC632551", radix: 16) else {
+            return nil
+        }
+        let halfOrder = curveOrder / 2
+
+        let r = rawSignature.prefix(32)  // First 32 bytes = r
+        var s = rawSignature.suffix(32)  // Last 32 bytes = s
+
+        let sInt = BigInt(data: s)
+
+        // Step 4: If s > half-order, compute new s
+        if sInt > halfOrder {
+            let newS = curveOrder - sInt
+            s = newS.toData32()  // Convert back to 32 bytes
+        }
+
+        // Return the corrected signature
+        let correctedSignature = try? P256.Signing.ECDSASignature(derRepresentation: Data(rawSignature))
+        return correctedSignature
+    }
+}
+
+extension BigInt {
+
+    /// Initializes the `BigInt` object from a `Data` object.
+    ///
+    /// - Parameter data: The `Data` object to convert.
+    init(data: Data) {
+        self.init(data.map { String(format: "%02x", $0) }.joined(), radix: 16)!
+    }
+
+    /// Converts a `BigInt` object to a 32-byte `Data` object.
+    func toData32() -> Data {
+        let data = self.magnitude.serialize()
+        return data.count < 32 ? Data(repeating: 0, count: 32 - data.count) + data : data
     }
 }
