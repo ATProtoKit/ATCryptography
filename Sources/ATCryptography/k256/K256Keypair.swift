@@ -34,7 +34,7 @@ public struct K256Keypair: ExportableKeypair, Sendable {
         self.privateKey = try secp256k1.Signing.PrivateKey(dataRepresentation: privateKey)
         self.publicKey = self.privateKey.publicKey
         self.isExportable = isExportable
-        self.jwtAlgorithm = ATCryptography.p256JWTAlgorithm
+        self.jwtAlgorithm = ATCryptography.k256JWTAlgorithm
     }
 
     /// Generates a new random `K256Keypair`.
@@ -65,7 +65,8 @@ public struct K256Keypair: ExportableKeypair, Sendable {
     ///
     /// - Returns: The public key as a byte array.
     public func publicKeyBytes() -> [UInt8] {
-        return Array(publicKey.dataRepresentation)
+        let rawPublicKey = publicKey.dataRepresentation // Should be 64 bytes.
+        return Array(rawPublicKey)
     }
 
     /// Returns the public key as a string in the specified encoding.
@@ -98,19 +99,15 @@ public struct K256Keypair: ExportableKeypair, Sendable {
     public func sign(message: [UInt8]) async throws -> [UInt8] {
         let hash = await SHA256Hasher.sha256(message)
         let signature = try privateKey.signature(for: Data(hash))
-
-        do {
-            return try Array(signature.derRepresentation) // Converts to DER format.
-        } catch {
-            throw error
-        }
+        return Array(signature.dataRepresentation)
     }
 
     /// Exports the private key in raw byte format.
     ///
     /// - Returns: The private key as a byte array.
     ///
-    /// - Throws: `P256KeypairError.privateKeyNotExportable` if the keypair is not exportable.
+    /// - Throws: `EllipticalCurveKeypairError.privateKeyNotExportable` if the keypair is
+    /// not exportable.
     public func export() async throws -> [UInt8] {
         guard isExportable else {
             throw EllipticalCurveKeypairError.privateKeyNotExportable

@@ -30,7 +30,7 @@ public struct K256Plugin: DIDKeyPlugin {
         return try await K256Operations.verifyDIDSignature(did: did, data: message, signature: signature, options: options)
     }
 
-    /// Compresses an uncompressed p256 public key.
+    /// Compresses an uncompressed k256 public key.
     ///
     /// - Parameter publicKey: The uncompressed public key as a byte array. Must be exactly
     /// 65 bytes.
@@ -41,7 +41,7 @@ public struct K256Plugin: DIDKeyPlugin {
         return try K256Encoding.compressPublicKey(publicKey)
     }
 
-    /// Decompresses a compressed p256 public key.
+    /// Decompresses a compressed k256 public key.
     ///
     /// - Parameter publicKey: The compressed public key as a byte array. Must be exactly
     /// 33 bytes.
