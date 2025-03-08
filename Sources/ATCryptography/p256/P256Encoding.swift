@@ -32,7 +32,7 @@ public struct P256Encoding {
     ///
     /// - Parameter publicKey: The compressed public key as a byte array. Must have exactly
     /// 33 bytes.
-    /// - Returns: The uncompressed public key as a 65-byte array.
+    /// - Returns: The uncompressed public key.
     ///
     /// - Throws: `EllipticalCurveEncodingError.invalidKeyLength` if the key length is incorrect.
     ///           `EllipticalCurveEncodingError.keyDecodingFailed` if the key decoding failed.
