@@ -44,6 +44,7 @@ public struct P256Keypair: ExportableKeypair, Sendable {
     /// - Returns: A new `P256Keypair` instance.
     public static func create(isExportable: Bool = false) throws -> P256Keypair {
         let privateKey = P256.Signing.PrivateKey()
+
         return try P256Keypair(privateKey: Array(privateKey.rawRepresentation), isExportable: isExportable)
     }
 
@@ -65,7 +66,8 @@ public struct P256Keypair: ExportableKeypair, Sendable {
     ///
     /// - Returns: The public key as a byte array.
     public func publicKeyBytes() -> [UInt8] {
-        return Array(publicKey.rawRepresentation)
+        let rawPublicKey = publicKey.rawRepresentation // Should be 64 bytes
+        return Array(rawPublicKey)
     }
 
     /// Returns the public key as a string in the specified encoding.
