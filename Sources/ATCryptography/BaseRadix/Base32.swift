@@ -45,13 +45,16 @@ public struct Base32 {
         let normalizedString = string.uppercased()
         let alphabet = Base32.base32AlphabetUpper
 
+        // Trim valid padding at the end
+        let trimmedString = normalizedString.trimmingCharacters(in: CharacterSet(charactersIn: "="))
+
         var buffer: UInt32 = 0
         var bufferSize = 0
         var output: [UInt8] = []
 
-        for char in normalizedString {
-            guard char != Base32.paddingCharacter, let value = alphabet.firstIndex(of: char) else {
-                return nil
+        for char in trimmedString {
+            guard let value = alphabet.firstIndex(of: char) else {
+                return nil // Invalid character found
             }
 
             buffer = (buffer << 5) | UInt32(value)
