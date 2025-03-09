@@ -37,7 +37,7 @@ struct Base58Suite {
         }
     }
 
-    @Test("Decode an empty string.")
+    @Test("Decodes an empty string.")
     func decodeEmptyString() async throws {
         let input = ""
         let base58 = try Base58.decode(input)

@@ -44,7 +44,7 @@ struct Base32Suite {
         #expect(Base32.decode(input) == nil)
     }
 
-    @Test("Decodes an emmpty string.")
+    @Test("Decodes an empty string.")
     func decodeEmptyString() {
         let input = ""
         #expect(Base32.decode(input) == nil)
