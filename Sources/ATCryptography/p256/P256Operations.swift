@@ -62,7 +62,7 @@ public struct P256Operations {
             return false
         }
 
-        guard let correctedSignature = Self.normalizeSignature(signature: parsedSignature) else {
+        guard let correctedSignature = parsedSignature.normalizedForP256() else {
             return false
         }
 
@@ -84,52 +84,5 @@ public struct P256Operations {
         } catch {
             return false
         }
-    }
-
-    /// Creates a "low-S" variant of the signature, if required.
-    ///
-    /// - Parameter signature: The signature itself.
-    /// - Returns: The signature in its "low-S" variant, or `nil` if the signature fails to
-    /// be created.
-    public static func normalizeSignature(signature: P256.Signing.ECDSASignature) -> P256.Signing.ECDSASignature? {
-        let rawSignature = signature.derRepresentation
-
-        // Since CryptoKit doesn't have built-in support for exposing the curve order or retrieving the "low-S" variant,
-        // we're making our own.
-        guard let curveOrder = BigInt("FFFFFFFF00000000FFFFFFFFFFFFFFFFBCE6FAADA7179E84F3B9CAC2FC632551", radix: 16) else {
-            return nil
-        }
-        let halfOrder = curveOrder / 2
-
-        let r = rawSignature.prefix(32)  // First 32 bytes = r
-        var s = rawSignature.suffix(32)  // Last 32 bytes = s
-
-        let sInt = BigInt(data: s)
-
-        // Step 4: If s > half-order, compute new s
-        if sInt > halfOrder {
-            let newS = curveOrder - sInt
-            s = newS.toData32()  // Convert back to 32 bytes
-        }
-
-        // Return the corrected signature
-        let correctedSignature = try? P256.Signing.ECDSASignature(derRepresentation: Data(rawSignature))
-        return correctedSignature
-    }
-}
-
-extension BigInt {
-
-    /// Initializes the `BigInt` object from a `Data` object.
-    ///
-    /// - Parameter data: The `Data` object to convert.
-    init(data: Data) {
-        self.init(data.map { String(format: "%02x", $0) }.joined(), radix: 16)!
-    }
-
-    /// Converts a `BigInt` object to a 32-byte `Data` object.
-    func toData32() -> Data {
-        let data = self.magnitude.serialize()
-        return data.count < 32 ? Data(repeating: 0, count: 32 - data.count) + data : data
     }
 }

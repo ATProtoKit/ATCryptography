@@ -62,7 +62,7 @@ public struct K256Operations {
             return false
         }
 
-        guard let correctedSignature = Self.normalizeSignature(signature: parsedSignature) else {
+        guard let correctedSignature = parsedSignature.normalizedForK256() else {
             return false
         }
 
@@ -83,41 +83,6 @@ public struct K256Operations {
             return ecdsaSignature.dataRepresentation == signature.toData()
         } catch {
             return false
-        }
-    }
-
-    /// Creates a "low-S" variant of the signature, if required.
-    ///
-    /// - Parameter signature: The signature itself.
-    /// - Returns: The signature in its "low-S" variant, or `nil` if the signature fails to
-    /// be created.
-    public static func normalizeSignature(signature: secp256k1.Signing.ECDSASignature) -> secp256k1.Signing.ECDSASignature? {
-        do {
-            let rawSignature = try signature.derRepresentation
-
-            // Since CryptoKit doesn't have built-in support for exposing the curve order or retrieving the "low-S" variant,
-            // we're making our own.
-            guard let curveOrder = BigInt("FFFFFFFF00000000FFFFFFFFFFFFFFFFBCE6FAADA7179E84F3B9CAC2FC632551", radix: 16) else {
-                return nil
-            }
-            let halfOrder = curveOrder / 2
-
-            let r = rawSignature.prefix(32)  // First 32 bytes = r
-            var s = rawSignature.suffix(32)  // Last 32 bytes = s
-
-            let sInt = BigInt(data: s)
-
-            // Step 4: If s > half-order, compute new s
-            if sInt > halfOrder {
-                let newS = curveOrder - sInt
-                s = newS.toData32()  // Convert back to 32 bytes
-            }
-
-            // Return the corrected signature
-            let correctedSignature = try? secp256k1.Signing.ECDSASignature(derRepresentation: Data(rawSignature))
-            return correctedSignature
-        } catch {
-            return nil
         }
     }
 }
