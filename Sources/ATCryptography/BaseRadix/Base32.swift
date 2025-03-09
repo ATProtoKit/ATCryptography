@@ -51,7 +51,7 @@ public struct Base32 {
 
         for char in normalizedString {
             guard char != Base32.paddingCharacter, let value = alphabet.firstIndex(of: char) else {
-                continue
+                return nil
             }
 
             buffer = (buffer << 5) | UInt32(value)
