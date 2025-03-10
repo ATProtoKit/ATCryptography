@@ -24,7 +24,6 @@ struct Base16Suite {
         #expect(Base16.encodeUpper(input) == expectedOutput)
     }
 
-    /// Test decoding a valid lowercase hex string.
     @Test("Decodes a valid lowercase Base16 string.")
     func decodeLowercase() {
         let input = "12abcdef"
