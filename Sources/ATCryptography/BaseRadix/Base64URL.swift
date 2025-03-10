@@ -17,10 +17,12 @@ public struct Base64URL {
     /// - Parameter data: The `Data` to encode.
     /// - Returns: The Base64URL-encoded `String` (without padding).
     public static func encodeURL(_ data: Data) -> String {
-        return data.base64EncodedString()
+        let base64 = data.base64EncodedString()
             .replacingOccurrences(of: "+", with: "-")
             .replacingOccurrences(of: "/", with: "_")
-            .trimmingCharacters(in: CharacterSet(charactersIn: "=")) // Remove padding.
+
+        // Ensure we remove exactly the expected padding
+        return base64.replacingOccurrences(of: "=", with: "")
     }
 
     /// Decodes a Base64URL-encoded string (without padding) into a `Data` object.
