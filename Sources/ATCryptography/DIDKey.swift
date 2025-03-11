@@ -7,7 +7,7 @@
 
 import Foundation
 
-/// A collection of utility functions for handling `did:key` operations.
+/// A collection of utility methods for handling `did:key` operations.
 public struct DIDKey {
 
     /// Parses a multikey string and returns the associated JWT algorithm and key bytes.

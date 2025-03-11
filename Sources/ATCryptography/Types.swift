@@ -106,7 +106,7 @@ public struct VerifyOptions {
 
     /// Initializes verification options.
     ///
-    /// - Parameter allowMalleableSig: Whether to allow malleable signatures (defaults to `false`).
+    /// - Parameter areMalleableSignaturesAllowed: Whether to allow malleable signatures (defaults to `false`).
     public init(areMalleableSignaturesAllowed: Bool? = false) {
         self.areMalleableSignaturesAllowed = areMalleableSignaturesAllowed
     }

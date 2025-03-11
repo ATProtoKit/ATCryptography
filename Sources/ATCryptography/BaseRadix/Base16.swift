@@ -28,7 +28,7 @@ public struct Base16 {
 
     /// Converts a Base16 string to binary data.
     ///
-    /// - Parameter input: The Base16 string to decode.
+    /// - Parameter string: The Base16 string to decode.
     /// - Returns: The raw bytes as an array of `UInt8`, or `nil` if the string is invalid.
     ///
     /// - Note: The input string must contain an even number of characters

@@ -8,7 +8,7 @@
 
 import Foundation
 
-/// A collection of utility functions for verifying signatures.
+/// A collection of utility methods for verifying signatures.
 public struct SignatureVerifier {
 
     /// Verifies a digital signature using a `did:key`.
@@ -18,7 +18,7 @@ public struct SignatureVerifier {
     ///   - data: The original message that was signed.
     ///   - signature: The signature to verify.
     ///   - options: Options for signature verification. Optional. Defaults to `nil`.
-    ///   - jwtSignature: The JWT algorithm used. Optional. Defaults to `nil`.
+    ///   - jwtAlgorithm: The JWT algorithm used. Optional. Defaults to `nil`.
     /// - Returns: `true` if the signature is valid, or `false` if not.
     ///
     /// - Throws: An error if the key type is unsupported or the JWT algorithm does not match.

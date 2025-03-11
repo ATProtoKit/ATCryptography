@@ -8,7 +8,7 @@
 import Foundation
 import CryptoKit
 
-/// A collection of utility functions for generating random data.
+/// A collection of utility methods for generating random data.
 public struct SecureRandom {
 
     /// Generates a random byte array of the specified length.

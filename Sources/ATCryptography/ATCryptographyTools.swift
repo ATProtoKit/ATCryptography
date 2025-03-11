@@ -7,7 +7,7 @@
 
 import Foundation
 
-/// Utility functions for handling DIDs, multikeys, and byte arrays in the AT Protocol.
+/// Utility methods for handling DIDs, multikeys, and byte arrays in the AT Protocol.
 public struct ATCryptographyTools {
 
     /// Extracts the multikey portion from a DID string.
