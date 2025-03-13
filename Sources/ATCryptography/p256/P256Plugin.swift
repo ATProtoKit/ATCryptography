@@ -51,9 +51,6 @@ public struct P256Plugin: DIDKeyPlugin {
     /// \
     ///           `EllipticalCurveEncodingError.keyDecodingFailed` if the key decoding failed.
     public static func decompressPublicKey(_ publicKey: [UInt8]) throws -> [UInt8] {
-        let uncompressedKey = try P256Encoding.decompressPublicKey(publicKey)
-
-        // Drop the prefix so it returns the normal public key.
-        return Array(uncompressedKey.dropFirst())
+        return try P256Encoding.decompressPublicKey(publicKey)
     }
 }

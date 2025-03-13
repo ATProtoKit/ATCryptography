@@ -68,10 +68,28 @@ import Testing
             try #require(compressedKeys.count == 33,
                          "The compressed public key should have 33 bytes.")
 
-            let decompressedKeys = try P256Encoding.decompressPublicKey(compressedKeys)
+            let decompressedKeys = try P256Encoding.decompressPublicKey(compressedKeys, shouldAddPrefix: true)
 
             #expect(decompressedKeys.count == 65,
                     "The decompressed public key should have 65 bytes.")
+        }
+
+        @Test("Creates, compresses, and decompresses 100 p256 keypairs to make sure the compression works consistently.")
+        func compressionLoop() throws {
+            var publicKeys: [[UInt8]] = []
+            var compressedKeys: [[UInt8]] = []
+            var decompressedKeys: [[UInt8]] = []
+
+            for _ in 1...100 {
+                let keypair = try P256Keypair.create()
+                let parsedKey = try DIDKey.parseDIDKey(keypair.did())
+                publicKeys.append(parsedKey.keyBytes)
+            }
+
+            compressedKeys = try publicKeys.map { try P256Encoding.compressPublicKey($0) }
+            decompressedKeys = try compressedKeys.map { try P256Encoding.decompressPublicKey($0) }
+
+            #expect(publicKeys == decompressedKeys, "The decompressed public keys much match the original ones.")
         }
     }
 }

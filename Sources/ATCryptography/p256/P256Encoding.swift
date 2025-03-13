@@ -50,18 +50,20 @@ public struct P256Encoding {
     /// `0x03`, depending on whether the second half of the key is even or odd.. However,
     /// the prefix will automatically be added if it's 32 bytes instead.
     ///
-    /// - Parameter publicKey: The compressed public key as a byte array. Must have exactly
-    /// 33 bytes.
+    /// - Parameters:
+    ///   - publicKey: The compressed public key as a byte array. Must have exactly 33 bytes.
+    ///   - shouldAddPrefix: Determines whether the prefix should be added or not.
+    ///   Defaults to `false`.
     /// - Returns: The uncompressed public key.
     ///
     /// - Throws: `EllipticalCurveEncodingError.invalidKeyLength` if the key length is incorrect.
     ///           `EllipticalCurveEncodingError.keyDecodingFailed` if the key decoding failed.
-    public static func decompressPublicKey(_ publicKey: [UInt8]) throws -> [UInt8] {
+    public static func decompressPublicKey(_ publicKey: [UInt8], shouldAddPrefix: Bool = false) throws -> [UInt8] {
         let rawKey: Data
 
         switch publicKey.count {
             case 33 where publicKey.first == 0x02 || publicKey.first == 0x03:
-                // Remove prefix before using CryptoKit
+                // Remove prefix before using CryptoKit.
                 rawKey = Data(publicKey)
 
             case 32:
@@ -77,7 +79,17 @@ public struct P256Encoding {
         var uncompressedKey = Array(key.rawRepresentation)
 
         // Prepend the uncompressed prefix (0x04)
-        uncompressedKey.insert(0x04, at: 0)
+        if shouldAddPrefix {
+            // Prepend the uncompressed key prefix (0x04) if not already present.
+            if uncompressedKey.first != 0x04 {
+                uncompressedKey.insert(0x04, at: 0)
+            }
+        } else {
+            // Ensure the key is returned without the prefix.
+            if uncompressedKey.first == 0x04 {
+                uncompressedKey.removeFirst()
+            }
+        }
 
         return uncompressedKey
     }
