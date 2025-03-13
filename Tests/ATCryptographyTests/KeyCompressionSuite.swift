@@ -22,12 +22,12 @@ import Testing
             let parsedDIDKey = try DIDKey.parseDIDKey(keypair.did())
             keyBytes = parsedDIDKey.keyBytes
 
-            compressedKeys = try K256Encoding.compressPublicKey(keyBytes)
+            compressedKeys = try K256Encoding.compress(publicKey: keyBytes)
 
             try #require(compressedKeys.count == 33,
                          "The compressed public key should have 33 bytes.")
 
-            let decompressedKeys = try K256Encoding.decompressPublicKey(compressedKeys)
+            let decompressedKeys = try K256Encoding.decompress(publicKey: compressedKeys)
 
             #expect(decompressedKeys.count == 65,
                     "The decompressed public key should have 65 bytes.")
@@ -45,8 +45,8 @@ import Testing
                 publicKeys.append(parsedDIDKey.keyBytes)
             }
 
-            compressedKeys = try publicKeys.map { try K256Encoding.compressPublicKey($0) }
-            decompressedKeys = try compressedKeys.map { try K256Encoding.decompressPublicKey($0) }
+            compressedKeys = try publicKeys.map { try K256Encoding.compress(publicKey: $0) }
+            decompressedKeys = try compressedKeys.map { try K256Encoding.decompress(publicKey: $0) }
 
             #expect(publicKeys == decompressedKeys, "The decompressed k256 public keys much match the original ones.")
         }
@@ -63,12 +63,12 @@ import Testing
             let parsedDIDKey = try DIDKey.parseDIDKey(keypair.did())
             keyBytes = parsedDIDKey.keyBytes
 
-            compressedKeys = try P256Encoding.compressPublicKey(keyBytes)
+            compressedKeys = try P256Encoding.compress(publicKey: keyBytes)
 
             try #require(compressedKeys.count == 33,
                          "The compressed public key should have 33 bytes.")
 
-            let decompressedKeys = try P256Encoding.decompressPublicKey(compressedKeys, shouldAddPrefix: true)
+            let decompressedKeys = try P256Encoding.decompress(publicKey: compressedKeys, shouldAddPrefix: true)
 
             #expect(decompressedKeys.count == 65,
                     "The decompressed public key should have 65 bytes.")
@@ -86,8 +86,8 @@ import Testing
                 publicKeys.append(parsedKey.keyBytes)
             }
 
-            compressedKeys = try publicKeys.map { try P256Encoding.compressPublicKey($0) }
-            decompressedKeys = try compressedKeys.map { try P256Encoding.decompressPublicKey($0) }
+            compressedKeys = try publicKeys.map { try P256Encoding.compress(publicKey: $0) }
+            decompressedKeys = try compressedKeys.map { try P256Encoding.decompress(publicKey: $0) }
 
             #expect(publicKeys == decompressedKeys, "The decompressed p256 public keys much match the original ones.")
         }

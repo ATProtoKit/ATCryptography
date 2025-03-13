@@ -19,7 +19,7 @@ import Testing
 
             let keypair = try K256Keypair.create(isExportable: true)
             let exportedKeypair = try await keypair.export()
-            importedKeypair = try K256Keypair.importPrivateKey(privateKey: exportedKeypair)
+            importedKeypair = try K256Keypair.import(privateKey: exportedKeypair)
 
             #expect(try keypair.did() == importedKeypair.did(), "The imported k256 did:key should match the original.")
         }
@@ -48,7 +48,7 @@ import Testing
 
             let keypair = try P256Keypair.create(isExportable: true)
             let exportedKeypair = try await keypair.export()
-            importedKeypair = try P256Keypair.importPrivateKey(privateKey: exportedKeypair)
+            importedKeypair = try P256Keypair.import(privateKey: exportedKeypair)
 
             #expect(try keypair.did() == importedKeypair.did(), "The imported p256 did:key should match the original.")
         }

@@ -79,7 +79,7 @@ public protocol DIDKeyPlugin: Sendable {
     /// - Returns: The compressed public key as a 33-byte array.
     ///
     /// - Throws: `P256EncodingError.invalidKeyLength` if the key length is incorrect.
-    static func compressPublicKey(_ publicKey: [UInt8]) throws -> [UInt8]
+    static func compress(publicKey: [UInt8]) throws -> [UInt8]
 
     /// Decompresses a compressed p256 public key.
     ///
@@ -90,7 +90,7 @@ public protocol DIDKeyPlugin: Sendable {
     /// - Throws: `P256EncodingError.invalidKeyLength` if the key length is incorrect.\
     /// \
     ///           `P256EncodingError.keyDecodingFailed` if the key decoding failed.
-    static func decompressPublicKey(_ publicKey: [UInt8]) throws -> [UInt8]
+    static func decompress(publicKey: [UInt8]) throws -> [UInt8]
 }
 
 /// Options for signature verification.

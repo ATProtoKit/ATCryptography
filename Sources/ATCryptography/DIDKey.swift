@@ -23,7 +23,7 @@ public struct DIDKey {
             throw DIDKeyError.unsupportedKeyType
         }
 
-        let keyBytes = try pluginType.decompressPublicKey(Array(prefixedBytes.dropFirst(pluginType.prefix.count)))
+        let keyBytes = try pluginType.decompress(publicKey: Array(prefixedBytes.dropFirst(pluginType.prefix.count)))
 
         return ParsedMultikey(jwtAlgorithm: pluginType.jwtAlgorithm, keyBytes: keyBytes)
     }
@@ -41,7 +41,7 @@ public struct DIDKey {
             throw DIDKeyError.unsupportedKeyType
         }
 
-        let prefixedBytes = plugin.prefix + (try plugin.compressPublicKey(keyBytes))
+        let prefixedBytes = plugin.prefix + (try plugin.compress(publicKey: keyBytes))
 
         return String(base58MultibasePrefix) + Base58.encode(Data(prefixedBytes))
     }

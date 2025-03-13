@@ -18,7 +18,7 @@ public struct K256Encoding {
     /// - Returns: The compressed public key as a 33-byte array.
     ///
     /// - Throws: `EllipticalCurveEncodingError.invalidKeyLength` if the key length is incorrect.
-    public static func compressPublicKey(_ publicKey: [UInt8]) throws -> [UInt8] {
+    public static func compress(publicKey: [UInt8]) throws -> [UInt8] {
         guard publicKey.count == 65,
               let firstByte = publicKey.first,
               firstByte == 4,
@@ -49,7 +49,7 @@ public struct K256Encoding {
     ///
     /// - Throws: `EllipticalCurveEncodingError.invalidKeyLength` if the key length is incorrect.
     ///           `EllipticalCurveEncodingError.keyDecodingFailed` if the key decoding failed.
-    public static func decompressPublicKey(_ publicKey: [UInt8]) throws -> [UInt8] {
+    public static func decompress(publicKey: [UInt8]) throws -> [UInt8] {
         guard publicKey.count == 33,
               let firstByte = publicKey.first,
               (firstByte == 2 || firstByte == 3) else {

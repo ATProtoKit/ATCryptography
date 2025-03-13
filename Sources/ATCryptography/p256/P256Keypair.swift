@@ -55,7 +55,7 @@ public struct P256Keypair: ExportableKeypair, Sendable {
     /// - Returns: A `P256Keypair` instance.
     ///
     /// - Throws: An error if the private key is invalid.
-    public static func importPrivateKey<Key: DataConvertible>(privateKey: Key, isExportable: Bool = false) throws -> P256Keypair {
+    public static func `import`<Key: DataConvertible>(privateKey: Key, isExportable: Bool = false) throws -> P256Keypair {
         let privateKeyBytes = privateKey.toData().map { $0 }
         return try P256Keypair(privateKey: privateKeyBytes, isExportable: isExportable)
     }
@@ -74,7 +74,7 @@ public struct P256Keypair: ExportableKeypair, Sendable {
     /// - Returns: The encoded public key string.
     ///
     /// - Throws: `MultibaseError.unsupportedMultibase` if the encoding is not supported.
-    public func publicKeyString(encoding: Multibase.MultibaseEncoding = .base64urlpad) throws -> String {
+    public func publicKeyAsString(encoding: Multibase.MultibaseEncoding = .base64urlpad) throws -> String {
         return try Multibase.bytesToMultibase(bytes: publicKeyBytes(), encoding: encoding)
     }
 

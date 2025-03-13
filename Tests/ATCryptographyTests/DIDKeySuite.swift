@@ -16,7 +16,7 @@ import Testing
             EllipticalCurveTestVectors.k256Seeds,
             EllipticalCurveTestVectors.k256IDs))
     func validateKeyDerivesDID(seed: String, didKey: String) throws {
-        let keypair = try K256Keypair.importPrivateKey(privateKey: seed.hexBytes)
+        let keypair = try K256Keypair.import(privateKey: seed.hexBytes)
         let keypairDIDKey = try keypair.did()
 
         #expect(keypairDIDKey == didKey,
@@ -28,7 +28,7 @@ import Testing
             EllipticalCurveTestVectors.k256Seeds,
             EllipticalCurveTestVectors.k256IDs))
     func convertBytesToDIDKey(seed: String, didKey: String) throws {
-        let keypair = try K256Keypair.importPrivateKey(privateKey: seed.hexBytes)
+        let keypair = try K256Keypair.import(privateKey: seed.hexBytes)
         let formattedDIDKey = try DIDKey.formatDIDKey(
             jwtAlgorithm: k256JWTAlgorithm,
             keyBytes: keypair.publicKeyBytes()
@@ -53,7 +53,7 @@ import Testing
             EllipticalCurveTestVectors.p256TestVectorsIDs))
     func validateKeyDerivesDID(privateKey: String, didKey: String) throws {
         let bytes: [UInt8] = [UInt8](try Base58.decode(privateKey))
-        let keypair = try P256Keypair.importPrivateKey(privateKey: bytes)
+        let keypair = try P256Keypair.import(privateKey: bytes)
         let keypairDIDKey = try keypair.did()
 
         #expect(keypairDIDKey == didKey,
@@ -66,7 +66,7 @@ import Testing
             EllipticalCurveTestVectors.p256TestVectorsIDs))
     func convertBytesToDIDKey(privateKey: String, didKey: String) throws {
         let bytes: [UInt8] = [UInt8](try Base58.decode(privateKey))
-        let keypair = try P256Keypair.importPrivateKey(privateKey: bytes)
+        let keypair = try P256Keypair.import(privateKey: bytes)
         let formattedDIDKey = try DIDKey.formatDIDKey(
             jwtAlgorithm: p256JWTAlgorithm,
             keyBytes: keypair.publicKeyBytes()

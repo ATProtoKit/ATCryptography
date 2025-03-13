@@ -37,8 +37,8 @@ public struct P256Plugin: DIDKeyPlugin {
     /// - Returns: The compressed public key as a 33-byte array.
     ///
     /// - Throws: `EllipticalCurveEncodingError.invalidKeyLength` if the key length is incorrect.
-    public static func compressPublicKey(_ publicKey: [UInt8]) throws -> [UInt8] {
-        return try P256Encoding.compressPublicKey(publicKey)
+    public static func compress(publicKey: [UInt8]) throws -> [UInt8] {
+        return try P256Encoding.compress(publicKey: publicKey)
     }
 
     /// Decompresses a compressed p256 public key.
@@ -50,7 +50,7 @@ public struct P256Plugin: DIDKeyPlugin {
     /// - Throws: `EllipticalCurveEncodingError.invalidKeyLength` if the key length is incorrect.\
     /// \
     ///           `EllipticalCurveEncodingError.keyDecodingFailed` if the key decoding failed.
-    public static func decompressPublicKey(_ publicKey: [UInt8]) throws -> [UInt8] {
-        return try P256Encoding.decompressPublicKey(publicKey)
+    public static func decompress(publicKey: [UInt8]) throws -> [UInt8] {
+        return try P256Encoding.decompress(publicKey: publicKey)
     }
 }
