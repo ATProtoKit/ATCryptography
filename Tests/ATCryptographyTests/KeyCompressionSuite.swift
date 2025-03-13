@@ -14,7 +14,7 @@ import Testing
     @Suite("k256 Compression") struct k256Tests {
 
         @Test("Compresses a k256 keypair to its appropriate length, then to its original length.")
-        func compressAndDecompressk256Keypair() throws {
+        func compressAndDecompressKeypair() throws {
             var keyBytes: [UInt8] = []
             var compressedKeys: [UInt8] = []
 
@@ -33,8 +33,8 @@ import Testing
                     "The decompressed public key should have 65 bytes.")
         }
 
-        @Test("Makes 100 roundtrips to make sure the compression works consistently.")
-        func compressionRoundtrip() throws {
+        @Test("Creates, compresses, and decompresses 100 k256 keypairs to make sure the compression works consistently.")
+        func compressionLoop() throws {
             var publicKeys: [[UInt8]] = []
             var compressedKeys: [[UInt8]] = []
             var decompressedKeys: [[UInt8]] = []
@@ -55,7 +55,7 @@ import Testing
     @Suite("p256 Compression") struct p256Tests {
 
         @Test("Compresses a p256 keypair to its appropriate length, then to its original length.")
-        func compressAndDecompressp256Keypair() throws {
+        func compressAndDecompressKeypair() throws {
             var keyBytes: [UInt8] = []
             var compressedKeys: [UInt8] = []
 

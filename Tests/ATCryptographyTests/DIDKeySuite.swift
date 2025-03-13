@@ -27,7 +27,7 @@ import Testing
           arguments: zip(
             EllipticalCurveTestVectors.k256Seeds,
             EllipticalCurveTestVectors.k256IDs))
-    func convertBetweenBytesAndDID(seed: String, didKey: String) throws {
+    func convertBytesToDIDKey(seed: String, didKey: String) throws {
         let keypair = try K256Keypair.importPrivateKey(privateKey: seed.hexBytes)
         let formattedDIDKey = try DIDKey.formatDIDKey(
             jwtAlgorithm: ATCryptography.k256JWTAlgorithm,
@@ -51,7 +51,7 @@ import Testing
           arguments: zip(
             EllipticalCurveTestVectors.p256PrivateKeys,
             EllipticalCurveTestVectors.p256TestVectorsIDs))
-    func deriveDIDKeyFromJWTAlgorithm(privateKey: String, didKey: String) throws {
+    func validateKeyDerivesDID(privateKey: String, didKey: String) throws {
         let bytes: [UInt8] = [UInt8](try Base58.decode(privateKey))
         let keypair = try P256Keypair.importPrivateKey(privateKey: bytes)
         let keypairDIDKey = try keypair.did()
