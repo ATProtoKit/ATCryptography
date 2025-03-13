@@ -12,7 +12,7 @@ import Foundation
 public struct K256Keypair: ExportableKeypair, Sendable {
 
     /// The JSON Web Token (JWT) signing algorithm used.
-    public let jwtAlgorithm: String
+    public let jwtAlgorithm: String = ATCryptography.k256JWTAlgorithm
 
     /// The private key used for signing.
     private let privateKey: secp256k1.Signing.PrivateKey
@@ -31,10 +31,9 @@ public struct K256Keypair: ExportableKeypair, Sendable {
     ///
     /// - Throws: An error if the private key is invalid.
     private init(privateKey: [UInt8], isExportable: Bool) throws {
-        self.privateKey = try secp256k1.Signing.PrivateKey(dataRepresentation: privateKey)
+        self.privateKey = try secp256k1.Signing.PrivateKey(dataRepresentation: privateKey, format: .uncompressed)
         self.publicKey = self.privateKey.publicKey
         self.isExportable = isExportable
-        self.jwtAlgorithm = ATCryptography.k256JWTAlgorithm
     }
 
     /// Generates a new random `K256Keypair`.
@@ -43,7 +42,7 @@ public struct K256Keypair: ExportableKeypair, Sendable {
     /// Defaults to `false`.
     /// - Returns: A new `K256Keypair` instance.
     public static func create(isExportable: Bool = false) throws -> K256Keypair {
-        let privateKey = try secp256k1.Signing.PrivateKey()
+        let privateKey = try secp256k1.Signing.PrivateKey(format: .uncompressed)
         return try K256Keypair(privateKey: Array(privateKey.dataRepresentation), isExportable: isExportable)
     }
 
