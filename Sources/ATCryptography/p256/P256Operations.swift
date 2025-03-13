@@ -47,7 +47,7 @@ public struct P256Operations {
         let allowMalleable = options?.areMalleableSignaturesAllowed ?? false
         let hashedData = await SHA256Hasher.sha256(data)
 
-        guard let publicKey = try? P256.Signing.PublicKey(compactRepresentation: publicKey) else {
+        guard let publicKey = try? P256.Signing.PublicKey(compressedRepresentation: publicKey) else {
             throw EllipticalCurveOperationsError.invalidPublicKey
         }
 
