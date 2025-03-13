@@ -74,7 +74,7 @@ public struct P256Keypair: ExportableKeypair, Sendable {
     /// - Returns: The encoded public key string.
     ///
     /// - Throws: `MultibaseError.unsupportedMultibase` if the encoding is not supported.
-    public func publicKeyAsString(encoding: Multibase.MultibaseEncoding = .base64urlpad) throws -> String {
+    public func publicKeyAsString(using encoding: Multibase.MultibaseEncoding = .base64urlpad) throws -> String {
         return try Multibase.bytesToMultibase(bytes: publicKeyBytes(), encoding: encoding)
     }
 
