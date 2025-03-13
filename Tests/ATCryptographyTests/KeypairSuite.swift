@@ -21,7 +21,7 @@ import Testing
             let exportedKeypair = try await keypair.export()
             importedKeypair = try K256Keypair.importPrivateKey(privateKey: exportedKeypair)
 
-            #expect(try keypair.did() == importedKeypair.did())
+            #expect(try keypair.did() == importedKeypair.did(), "The imported k256 did:key should match the original.")
         }
 
         @Test("Produces a valid k256 signature.")
@@ -36,7 +36,7 @@ import Testing
                 signature: signature
             )
 
-            #expect(isValidSignature == true)
+            #expect(isValidSignature == true, "The k256 signature should be valid.")
         }
     }
 
@@ -50,7 +50,7 @@ import Testing
             let exportedKeypair = try await keypair.export()
             importedKeypair = try P256Keypair.importPrivateKey(privateKey: exportedKeypair)
 
-            #expect(try keypair.did() == importedKeypair.did())
+            #expect(try keypair.did() == importedKeypair.did(), "The imported p256 did:key should match the original.")
         }
 
         @Test("Produces a valid p256 signature.")
@@ -65,7 +65,7 @@ import Testing
                 signature: signature
             )
 
-            #expect(isValidSignature == true)
+            #expect(isValidSignature == true, "The p256 signature should be valid.")
         }
     }
 }

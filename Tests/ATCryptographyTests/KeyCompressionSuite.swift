@@ -48,7 +48,7 @@ import Testing
             compressedKeys = try publicKeys.map { try K256Encoding.compressPublicKey($0) }
             decompressedKeys = try compressedKeys.map { try K256Encoding.decompressPublicKey($0) }
 
-            #expect(publicKeys == decompressedKeys, "The decompressed public keys much match the original ones.")
+            #expect(publicKeys == decompressedKeys, "The decompressed k256 public keys much match the original ones.")
         }
     }
 
@@ -89,7 +89,7 @@ import Testing
             compressedKeys = try publicKeys.map { try P256Encoding.compressPublicKey($0) }
             decompressedKeys = try compressedKeys.map { try P256Encoding.decompressPublicKey($0) }
 
-            #expect(publicKeys == decompressedKeys, "The decompressed public keys much match the original ones.")
+            #expect(publicKeys == decompressedKeys, "The decompressed p256 public keys much match the original ones.")
         }
     }
 }
