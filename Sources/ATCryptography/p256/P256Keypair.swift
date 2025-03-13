@@ -55,7 +55,7 @@ public struct P256Keypair: ExportableKeypair, Sendable {
     /// - Returns: A `P256Keypair` instance.
     ///
     /// - Throws: An error if the private key is invalid.
-    public static func importPrivateKey(privateKey: DataConvertible, isExportable: Bool = false) throws -> P256Keypair {
+    public static func importPrivateKey<Key: DataConvertible>(privateKey: Key, isExportable: Bool = false) throws -> P256Keypair {
         let privateKeyBytes = privateKey.toData().map { $0 }
         return try P256Keypair(privateKey: privateKeyBytes, isExportable: isExportable)
     }
