@@ -18,7 +18,7 @@ import secp256k1
 /// - SeeAlso: The [Cyptography][cyptography] section of the AT Protocol specifications.
 ///
 /// [cyptography]: https://atproto.com/specs/cryptography
-public class ATCryptography {
+public struct ATCryptography {
 
     /// The prefix used to indicate Base58 multibase encoding.
     public static let base58MultibasePrefix: Character = "z"
