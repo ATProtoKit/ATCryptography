@@ -42,7 +42,7 @@ public struct P256Keypair: ExportableKeypair, Sendable {
     /// Defaults to `false`.
     /// - Returns: A new `P256Keypair` instance.
     public static func create(isExportable: Bool = false) throws -> P256Keypair {
-        let privateKey = P256.Signing.PrivateKey(compactRepresentable: true)
+        let privateKey = P256.Signing.PrivateKey()
         return try P256Keypair(privateKey: Array(privateKey.rawRepresentation), isExportable: isExportable)
     }
 
