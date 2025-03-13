@@ -50,7 +50,7 @@ public struct K256Keypair: ExportableKeypair, Sendable {
     ///
     /// - Parameters:
     ///   - privateKey: The private key as a hex string or raw byte array.
-    ///   - isExportable: isExportable: Indicates whether the private key can be exported.
+    ///   - isExportable: Indicates whether the private key can be exported.
     /// Defaults to `false`.
     /// - Returns: A `K256Keypair` instance.
     ///
