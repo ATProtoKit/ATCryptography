@@ -13,8 +13,6 @@ public struct K256Encoding {
 
     /// Compresses an uncompressed k256 public key.
     ///
-    /// The uncompressed key
-    ///
     /// - Parameter publicKey: The uncompressed public key as a byte array. Must have exactly
     /// 65 bytes.
     /// - Returns: The compressed public key as a 33-byte array.
