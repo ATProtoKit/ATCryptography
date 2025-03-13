@@ -43,7 +43,7 @@ public struct DIDKey {
 
         let prefixedBytes = plugin.prefix + (try plugin.compressPublicKey(keyBytes))
 
-        return String(ATCryptography.base58MultibasePrefix) + Base58.encode(Data(prefixedBytes))
+        return String(base58MultibasePrefix) + Base58.encode(Data(prefixedBytes))
     }
 
     /// Parses a `did:key` string and returns the associated JWT algorithm and key bytes.
@@ -66,7 +66,7 @@ public struct DIDKey {
     ///
     /// - Throws: `DIDError.unsupportedKeyType` if the key type is not recognized.
     public static func formatDIDKey(jwtAlgorithm: String, keyBytes: [UInt8]) throws -> String {
-        return ATCryptography.didKeyPrefix + (try formatMultikey(jwtAlgorithm: jwtAlgorithm, keyBytes: keyBytes))
+        return didKeyPrefix + (try formatMultikey(jwtAlgorithm: jwtAlgorithm, keyBytes: keyBytes))
     }
 }
 

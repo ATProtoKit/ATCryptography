@@ -25,11 +25,11 @@ public struct P256Operations {
     public static func verifyDIDSignature(did: String, data: [UInt8], signature: [UInt8], options: VerifyOptions? = nil) async throws -> Bool {
         let prefixedBytes = try ATCryptographyTools.extractPrefixedBytes(from: ATCryptographyTools.extractMultikey(from: did))
 
-        guard ATCryptographyTools.hasPrefix(bytes: prefixedBytes, prefix: ATCryptography.p256DIDPrefix) else {
+        guard ATCryptographyTools.hasPrefix(bytes: prefixedBytes, prefix: p256DIDPrefix) else {
             throw EllipticalCurveOperationsError.invalidEllipticalCurveDID(did: did)
         }
 
-        let keyBytes = Array(prefixedBytes.dropFirst(ATCryptography.p256DIDPrefix.count))
+        let keyBytes = Array(prefixedBytes.dropFirst(p256DIDPrefix.count))
         return try await verifySignature(publicKey: keyBytes, data: data, signature: signature, options: options)
     }
 

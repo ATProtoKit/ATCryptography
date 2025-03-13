@@ -30,7 +30,7 @@ import Testing
     func convertBytesToDIDKey(seed: String, didKey: String) throws {
         let keypair = try K256Keypair.importPrivateKey(privateKey: seed.hexBytes)
         let formattedDIDKey = try DIDKey.formatDIDKey(
-            jwtAlgorithm: ATCryptography.k256JWTAlgorithm,
+            jwtAlgorithm: k256JWTAlgorithm,
             keyBytes: keypair.publicKeyBytes()
         )
 
@@ -38,7 +38,7 @@ import Testing
                      "The k256 did:key generated from the seed should match the hard-coded did:key.")
 
         let parsedDIDKey = try DIDKey.parseDIDKey(didKey)
-        #expect(parsedDIDKey.jwtAlgorithm == ATCryptography.k256JWTAlgorithm,
+        #expect(parsedDIDKey.jwtAlgorithm == k256JWTAlgorithm,
                 "The JWT algorithm should match the hard-coded value.")
         #expect(parsedDIDKey.keyBytes == keypair.publicKeyBytes(),
                 "The array of bytes in the parsed did:key should match the array of bytes in the keypair.")
@@ -68,7 +68,7 @@ import Testing
         let bytes: [UInt8] = [UInt8](try Base58.decode(privateKey))
         let keypair = try P256Keypair.importPrivateKey(privateKey: bytes)
         let formattedDIDKey = try DIDKey.formatDIDKey(
-            jwtAlgorithm: ATCryptography.p256JWTAlgorithm,
+            jwtAlgorithm: p256JWTAlgorithm,
             keyBytes: keypair.publicKeyBytes()
         )
 
@@ -76,7 +76,7 @@ import Testing
                      "The k256 did:key generated from the seed should match the hard-coded did:key.")
 
         let parsedDIDKey = try DIDKey.parseDIDKey(didKey)
-        #expect(parsedDIDKey.jwtAlgorithm == ATCryptography.p256JWTAlgorithm,
+        #expect(parsedDIDKey.jwtAlgorithm == p256JWTAlgorithm,
                 "The JWT algorithm should match the hard-coded value.")
         #expect(parsedDIDKey.keyBytes == keypair.publicKeyBytes(),
                 "The array of bytes in the parsed did:key should match the array of bytes in the keypair.")

@@ -12,7 +12,7 @@ import Foundation
 public struct K256Keypair: ExportableKeypair, Sendable {
 
     /// The JSON Web Token (JWT) signing algorithm used.
-    public let jwtAlgorithm: String = ATCryptography.k256JWTAlgorithm
+    public let jwtAlgorithm: String = k256JWTAlgorithm
 
     /// The private key used for signing.
     private let privateKey: secp256k1.Signing.PrivateKey

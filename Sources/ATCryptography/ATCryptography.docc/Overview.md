@@ -77,6 +77,15 @@ The package fully open sourced and is licenced under the Apache 2.0 licence. You
 - ``DIDable``
 - ``DataConvertible``
 
+### Global Variables
+
+- ``base58MultibasePrefix``
+- ``didKeyPrefix``
+- ``p256DIDPrefix``
+- ``k256DIDPrefix``
+- ``p256JWTAlgorithm``
+- ``k256JWTAlgorithm``
+
 ### Errors
 
 - ``ATCryptographyToolsError``

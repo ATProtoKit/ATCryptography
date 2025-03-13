@@ -17,11 +17,11 @@ public struct ATCryptographyTools {
     ///
     /// - Throws: An error if the DID does not have the correct prefix.
     public static func extractMultikey(from did: String) throws -> String {
-        guard did.hasPrefix(ATCryptography.didKeyPrefix) else {
+        guard did.hasPrefix(didKeyPrefix) else {
             throw ATCryptographyToolsError.invalidDIDPrefix(did: did)
         }
 
-        return String(did.dropFirst(ATCryptography.didKeyPrefix.count))
+        return String(did.dropFirst(didKeyPrefix.count))
     }
 
     /// Extracts the byte array from a Base58-encoded multikey string.
@@ -33,7 +33,7 @@ public struct ATCryptographyTools {
     /// \
     ///           - `ATCryptographyError.invalidBase58Encoding` if decoding fails.
     public static func extractPrefixedBytes(from multikey: String) throws -> [UInt8] {
-        guard multikey.hasPrefix(String(ATCryptography.base58MultibasePrefix)) else {
+        guard multikey.hasPrefix(String(base58MultibasePrefix)) else {
             throw ATCryptographyToolsError.invalidMultikeyPrefix(multikey: multikey)
         }
 

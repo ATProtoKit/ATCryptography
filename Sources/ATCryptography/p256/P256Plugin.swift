@@ -11,10 +11,10 @@ import Foundation
 public struct P256Plugin: DIDKeyPlugin {
 
     /// The prefix associated with this `did:key` implementation.
-    public static let prefix: [UInt8] = ATCryptography.p256DIDPrefix
+    public static let prefix: [UInt8] = p256DIDPrefix
 
     /// The JSON Web Token (JWT) algorithm associated with this key type.
-    public static let jwtAlgorithm: String = ATCryptography.p256JWTAlgorithm
+    public static let jwtAlgorithm: String = p256JWTAlgorithm
 
     /// Verifies a decentralized identifier (DID)-based signature.
     ///
