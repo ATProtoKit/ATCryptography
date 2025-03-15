@@ -59,6 +59,7 @@ The package fully open sourced and is licenced under the Apache 2.0 licence. You
 - ``P256Keypair``
 - ``Keypair``
 - ``ExportableKeypair``
+- <doc:GeneratingKeypairs>
 
 ### Public Key Encoding
 
