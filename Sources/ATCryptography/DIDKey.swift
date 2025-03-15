@@ -25,6 +25,12 @@ public struct DIDKey {
 
         let keyBytes = try pluginType.decompress(publicKey: Array(prefixedBytes.dropFirst(pluginType.prefix.count)))
 
+        // There appears to be a bug that's causing the public key to have less than the expected amount, but it's nearly impossible to replicate
+        // as it happens very rarely.
+        #if DEBUG
+        print("Public Key count: \(keyBytes.count)")
+        print("First byte for the public key: \([UInt8](keyBytes)[0])")
+        #endif
         return ParsedMultikey(jwtAlgorithm: pluginType.jwtAlgorithm, keyBytes: keyBytes)
     }
 

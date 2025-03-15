@@ -26,6 +26,11 @@ public struct P256Encoding {
     public static func compress(publicKey: [UInt8]) throws -> [UInt8] {
         let rawKey: [UInt8]
 
+        // There appears to be a bug that's causing the public key to have less than the expected amount, but it's nearly impossible to replicate
+        // as it happens very rarely.
+        #if DEBUG
+        print("Byte count: \(publicKey.count)")
+        #endif
         switch publicKey.count {
             case 65 where publicKey.first == 0x04:
                 // Remove the uncompressed prefix (0x04).
@@ -36,6 +41,11 @@ public struct P256Encoding {
                 rawKey = publicKey
 
             default:
+                // There appears to be a bug that's causing the public key to have less than the expected amount, but it's nearly impossible to replicate
+                // as it happens very rarely.
+                #if DEBUG
+                print("Bytes: \(publicKey)")
+                #endif
                 throw EllipticalCurveEncodingError.invalidKeyLength(expected: 65, actual: publicKey.count)
         }
 
