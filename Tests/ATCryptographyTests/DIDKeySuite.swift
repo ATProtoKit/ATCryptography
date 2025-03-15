@@ -9,77 +9,80 @@ import Foundation
 import Testing
 @testable import ATCryptography
 
-@Suite("k256 did:key") struct k256DIDKeyTests {
+@Suite("did:keys") struct didKeyTests {
 
-    @Test("Validate whether a private key correctly derives a did:key (in k256).",
-          arguments: zip(
-            EllipticalCurveTestVectors.k256Seeds,
-            EllipticalCurveTestVectors.k256IDs))
-    func validateKeyDerivesDID(seed: String, didKey: String) throws {
-        let keypair = try K256Keypair.import(privateKey: seed.hexBytes)
-        let keypairDIDKey = try keypair.did()
+    @Suite("k256 did:key") struct k256DIDKeyTests {
 
-        #expect(keypairDIDKey == didKey,
-                "The k256 did:key generated from the seed should match the hard-coded did:key.")
+        @Test("Validate whether a private key correctly derives a did:key (in k256).",
+              arguments: zip(
+                EllipticalCurveTestVectors.k256Seeds,
+                EllipticalCurveTestVectors.k256IDs))
+        func validateKeyDerivesDID(seed: String, didKey: String) throws {
+            let keypair = try K256Keypair.import(privateKey: seed.hexBytes)
+            let keypairDIDKey = try keypair.did()
+
+            #expect(keypairDIDKey == didKey,
+                    "The k256 did:key generated from the seed should match the hard-coded did:key.")
+        }
+
+        @Test("Converts between bytes to did:key (in k256).",
+              arguments: zip(
+                EllipticalCurveTestVectors.k256Seeds,
+                EllipticalCurveTestVectors.k256IDs))
+        func convertBytesToDIDKey(seed: String, didKey: String) throws {
+            let keypair = try K256Keypair.import(privateKey: seed.hexBytes)
+            let formattedDIDKey = try DIDKey.formatDIDKey(
+                jwtAlgorithm: k256JWTAlgorithm,
+                keyBytes: keypair.publicKeyBytes()
+            )
+
+            try #require(formattedDIDKey == didKey,
+                         "The k256 did:key generated from the seed should match the hard-coded did:key.")
+
+            let parsedDIDKey = try DIDKey.parseDIDKey(didKey)
+            #expect(parsedDIDKey.jwtAlgorithm == k256JWTAlgorithm,
+                    "The JWT algorithm should match the hard-coded value.")
+            #expect(parsedDIDKey.keyBytes == keypair.publicKeyBytes(),
+                    "The array of bytes in the parsed did:key should match the array of bytes in the keypair.")
+        }
     }
 
-    @Test("Converts between bytes to did:key (in k256).",
-          arguments: zip(
-            EllipticalCurveTestVectors.k256Seeds,
-            EllipticalCurveTestVectors.k256IDs))
-    func convertBytesToDIDKey(seed: String, didKey: String) throws {
-        let keypair = try K256Keypair.import(privateKey: seed.hexBytes)
-        let formattedDIDKey = try DIDKey.formatDIDKey(
-            jwtAlgorithm: k256JWTAlgorithm,
-            keyBytes: keypair.publicKeyBytes()
-        )
+    @Suite("p256 did:key") struct p256DIDKeyTests {
 
-        try #require(formattedDIDKey == didKey,
-                     "The k256 did:key generated from the seed should match the hard-coded did:key.")
+        @Test("Derives the correct did:key from the JWK algorithm (in p256).",
+              arguments: zip(
+                EllipticalCurveTestVectors.p256PrivateKeys,
+                EllipticalCurveTestVectors.p256TestVectorsIDs))
+        func validateKeyDerivesDID(privateKey: String, didKey: String) throws {
+            let bytes: [UInt8] = [UInt8](try Base58.decode(privateKey))
+            let keypair = try P256Keypair.import(privateKey: bytes)
+            let keypairDIDKey = try keypair.did()
 
-        let parsedDIDKey = try DIDKey.parseDIDKey(didKey)
-        #expect(parsedDIDKey.jwtAlgorithm == k256JWTAlgorithm,
-                "The JWT algorithm should match the hard-coded value.")
-        #expect(parsedDIDKey.keyBytes == keypair.publicKeyBytes(),
-                "The array of bytes in the parsed did:key should match the array of bytes in the keypair.")
-    }
-}
+            #expect(keypairDIDKey == didKey,
+                    "The k256 did:key generated from the seed should match the hard-coded did:key.")
+        }
 
-@Suite("p256 DID:Key") struct p256DIDKeyTests {
+        @Test("Converts between bytes to did:key (in p256).",
+              arguments: zip(
+                EllipticalCurveTestVectors.p256PrivateKeys,
+                EllipticalCurveTestVectors.p256TestVectorsIDs))
+        func convertBytesToDIDKey(privateKey: String, didKey: String) throws {
+            let bytes: [UInt8] = [UInt8](try Base58.decode(privateKey))
+            let keypair = try P256Keypair.import(privateKey: bytes)
+            let formattedDIDKey = try DIDKey.formatDIDKey(
+                jwtAlgorithm: p256JWTAlgorithm,
+                keyBytes: keypair.publicKeyBytes()
+            )
 
-    @Test("Derives the correct did:key from the JWK algorithm (in p256).",
-          arguments: zip(
-            EllipticalCurveTestVectors.p256PrivateKeys,
-            EllipticalCurveTestVectors.p256TestVectorsIDs))
-    func validateKeyDerivesDID(privateKey: String, didKey: String) throws {
-        let bytes: [UInt8] = [UInt8](try Base58.decode(privateKey))
-        let keypair = try P256Keypair.import(privateKey: bytes)
-        let keypairDIDKey = try keypair.did()
+            try #require(formattedDIDKey == didKey,
+                         "The k256 did:key generated from the seed should match the hard-coded did:key.")
 
-        #expect(keypairDIDKey == didKey,
-                "The k256 did:key generated from the seed should match the hard-coded did:key.")
-    }
-
-    @Test("Converts between bytes to did:key (in p256).",
-          arguments: zip(
-            EllipticalCurveTestVectors.p256PrivateKeys,
-            EllipticalCurveTestVectors.p256TestVectorsIDs))
-    func convertBytesToDIDKey(privateKey: String, didKey: String) throws {
-        let bytes: [UInt8] = [UInt8](try Base58.decode(privateKey))
-        let keypair = try P256Keypair.import(privateKey: bytes)
-        let formattedDIDKey = try DIDKey.formatDIDKey(
-            jwtAlgorithm: p256JWTAlgorithm,
-            keyBytes: keypair.publicKeyBytes()
-        )
-
-        try #require(formattedDIDKey == didKey,
-                     "The k256 did:key generated from the seed should match the hard-coded did:key.")
-
-        let parsedDIDKey = try DIDKey.parseDIDKey(didKey)
-        #expect(parsedDIDKey.jwtAlgorithm == p256JWTAlgorithm,
-                "The JWT algorithm should match the hard-coded value.")
-        #expect(parsedDIDKey.keyBytes == keypair.publicKeyBytes(),
-                "The array of bytes in the parsed did:key should match the array of bytes in the keypair.")
+            let parsedDIDKey = try DIDKey.parseDIDKey(didKey)
+            #expect(parsedDIDKey.jwtAlgorithm == p256JWTAlgorithm,
+                    "The JWT algorithm should match the hard-coded value.")
+            #expect(parsedDIDKey.keyBytes == keypair.publicKeyBytes(),
+                    "The array of bytes in the parsed did:key should match the array of bytes in the keypair.")
+        }
     }
 }
 
