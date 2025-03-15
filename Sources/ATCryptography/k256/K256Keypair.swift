@@ -81,9 +81,9 @@ public struct K256Keypair: ExportableKeypair, Sendable {
         return try Multibase.bytesToMultibase(bytes: publicKeyBytes(), encoding: encoding)
     }
 
-    /// Returns the decentralized identifier (DID) for this keypair.
+    /// Returns the `did:key` for this keypair.
     ///
-    /// - Returns: The formatted DID string.
+    /// - Returns: The formatted `did:key` string.
     public func did() throws -> String {
         do {
             return try DIDKey.formatDIDKey(jwtAlgorithm: jwtAlgorithm, keyBytes: publicKeyBytes())
