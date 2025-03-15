@@ -38,6 +38,9 @@ public struct K256Keypair: ExportableKeypair, Sendable {
 
     /// Generates a new random `K256Keypair`.
     ///
+    /// This is a factory method to create a private and public key pair. All instance methods
+    /// for this instance will only apply to the keypair.
+    ///
     /// - Parameter isExportable: Indicates whether the private key can be exported.
     /// Defaults to `false`.
     /// - Returns: A new `K256Keypair` instance.
