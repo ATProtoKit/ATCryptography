@@ -138,6 +138,5 @@ Task {
 
 The method will only return a `Bool`. If it returns `false`, then the following may be the issue:
 - Check that the public key and signature are using the same cryptographic system.
-- The message may not have been hashed correctly (if you didn't do it yourself). It's a good idea to hash it yourself instead of relying on an outside source
-unless you can be sure it will return with a properly-hashed message.
+- The message may not have been hashed correctly (if you didn't do it yourself). It's a good idea to hash it yourself instead of relying on an outside source unless you can be sure it will return with a properly-hashed message.
 - The signature could have been from a bad actor. If this is the case, reject it immediately and let the user know about it. 
