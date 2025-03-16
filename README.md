@@ -60,7 +60,7 @@ You can also use it on macOS. Please target **macOS** 13 or later.
 You can also use this project for any programs you make using Swift and running on **Docker**.
 
 > [!WARNING]
-> As of right now, Windows support is theoretically possible, but not has not been tested to work. While it’s not a goal to make it fully compatible on Windows, contributions and feedback on the matter are welcomed.
+> As of right now, Windows support is theoretically possible, but not has not been tested to work. Contributions and feedback on makjng it fully compatible for Windows and Windows Server are welcomed.
 
 ## Submitting Contributions and Feedback
 While this project will change significantly, feedback, issues, and contributions are highly welcomed and encouraged. If you'd like to contribute to this project, please be sure to read both the [API Guidelines](https://github.com/ATProtoKit/ATCryptography/blob/main/API_GUIDELINES.md) as well as the [Contributor Guidelines](https://github.com/MasterJ93/ATProtoKit/blob/main/CONTRIBUTING.md) before submitting a pull request. Any issues (such as bug reports or feedback) can be submitted in the [Issues](https://github.com/ATProtoKit/ATCryptography/issues) tab. Finally, if there are any security vulnerabilities, please read [SECURITY.md](https://github.com/ATProtoKit/ATCryptography/blob/main/SECURITY.md) for how to report it.
