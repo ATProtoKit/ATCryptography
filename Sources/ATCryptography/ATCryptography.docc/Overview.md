@@ -3,6 +3,10 @@
 Create and manage cryptographic keys and signatures for the AT Protocol.
 
 @Metadata {
+    @PageImage(
+        purpose: icon, 
+        source: "atcryptography_logo", 
+        alt: "A technology icon representing the ATCryptography framework.")
     @PageColor(blue)
 }
 
