@@ -7,7 +7,7 @@
 <p align="center">Cryptographic utilities for the AT Protocol, written in Swift.</p>
 
 <div align="center">
-
+[![GitHub Repo stars](https://img.shields.io/github/stars/atprotoKit/atcryptography?style=flat&logo=github)](https://github.com/ATProtoKit/ATCryptography)
 </div>
 <div align="center">
 
