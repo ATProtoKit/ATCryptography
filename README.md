@@ -22,6 +22,7 @@ This package implements cryptographic operations required by the AT Protocol, us
 ATCryptography supports the following cryptographic systems:
 - "p256," otherwise known as "secp256r1" or "NIST P-256."
 - "k256," otherwise known as "secp256k1" or "NIST K-256."
+
 The library provides helpers for key management, signing, verification, hashing, and encoding. These utilities are aligned with AT Protocol’s cryptographic requirements, including low-S signatures, byte representation compression, and string encodings.
 
 For details on cryptography in the AT Protocol, refer to the [Cryptography section](https://atproto.com/specs/cryptography) of the specification.
