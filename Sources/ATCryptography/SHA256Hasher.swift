@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import CryptoKit
+import Crypto
 
 /// A collection of utility methods for computing SHA-256 hashes.
 public struct SHA256Hasher: Sendable {

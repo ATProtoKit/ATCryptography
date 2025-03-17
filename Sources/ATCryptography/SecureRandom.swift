@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import CryptoKit
+import Crypto
 
 /// A collection of utility methods for generating random data.
 public struct SecureRandom {

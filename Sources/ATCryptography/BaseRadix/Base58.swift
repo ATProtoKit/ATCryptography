@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import CryptoKit
+import Crypto
 import BigInt
 
 /// Represents a Base58 encoding alphabet.

@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import CryptoKit
 import Crypto
 import secp256k1
 

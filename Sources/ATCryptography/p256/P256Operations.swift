@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import CryptoKit
+import Crypto
 import BigInt
 
 /// A collection of cryptographic operations related to p256.

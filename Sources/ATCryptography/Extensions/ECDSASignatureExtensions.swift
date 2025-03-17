@@ -7,7 +7,7 @@
 
 
 import Foundation
-import CryptoKit
+import Crypto
 import secp256k1
 import BigInt
 

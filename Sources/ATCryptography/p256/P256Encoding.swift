@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import CryptoKit
+import Crypto
 
 /// A collection of utility functions for handling p256 public key encoding.
 public struct P256Encoding {

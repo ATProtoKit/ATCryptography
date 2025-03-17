@@ -6,7 +6,7 @@
 //
 
 import Foundation
-@preconcurrency import CryptoKit
+@preconcurrency import Crypto
 
 /// A cryptographic keypair for p256.
 public struct P256Keypair: ExportableKeypair, Sendable {
