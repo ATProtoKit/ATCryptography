@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://github.com/ATProtoKit/ATCryptography/blob/main/Sources/ATCryptography/ATCryptography.docc/Resources/atcryptography_logo.png" height="128" alt="A logo for ATCryptography, which contains three stacks of rounded rectangles in an isometric top view. At the top stack, the at symbol is in a thick weight, with a pointed arrow at the tip. The background of the stack contains many 0s and 1s in a fade. The three stacks are lighter shades of blue.">
+  <img src="https://github.com/ATProtoKit/ATCryptography/blob/main/Sources/ATCryptography/ATCryptography.docc/Resources/atcryptography_icon.png" height="128" alt="A icon for ATCryptography, which contains three stacks of rounded rectangles in an isometric top view. At the top stack, the at symbol is in a thick weight, with a pointed arrow at the tip. The background of the stack contains many 0s and 1s in a fade. The three stacks are lighter shades of blue.">
 </p>
 
 <h1 align="center">ATCryptography</h1>
