@@ -16,14 +16,16 @@ public struct SecureRandom {
     /// - Parameter byteCount: The number of random bytes to generate.
     /// - Returns: A securely generated random byte array (`[UInt8]`).
     public static func randomBytes(_ byteCount: Int) throws -> [UInt8] {
-        var bytes = [UInt8](repeating: 0, count: 10)
-        let status = SecRandomCopyBytes(kSecRandomDefault, bytes.count, &bytes)
-
-        guard status == errSecSuccess else { // Always test the status.
-            throw SecureRandomError.failedToGenerateRandomBytes
+        guard byteCount > 0 else { return [] }
+        
+        var randomBytes = [UInt8](repeating: 0, count: byteCount)
+        var systemRandomNumberGenerator = SystemRandomNumberGenerator()
+        
+        for i in 0..<byteCount {
+            randomBytes[i] = UInt8.random(in: 0...255, using: &systemRandomNumberGenerator)
         }
-
-        return bytes
+        
+        return randomBytes
     }
 
     /// Generates a random `String` with the given encoding.
