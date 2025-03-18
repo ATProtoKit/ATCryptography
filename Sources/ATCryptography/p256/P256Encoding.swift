@@ -86,7 +86,7 @@ public struct P256Encoding {
             }
         } else {
             // Ensure the key is returned without the prefix.
-            if uncompressedKey.first == 0x04 {
+            if uncompressedKey.first == 0x04 && (uncompressedKey.count - 1) != 63 {
                 uncompressedKey.removeFirst()
             }
         }
