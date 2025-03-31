@@ -1,0 +1,22 @@
+{
+    "configurations": [
+        {
+            "type": "lldb",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:ATCryptography}",
+            "name": "Debug App",
+            "program": "${workspaceFolder:ATCryptography}/.build/debug/App",
+            "preLaunchTask": "swift: Build Debug App"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:ATCryptography}",
+            "name": "Release App",
+            "program": "${workspaceFolder:ATCryptography}/.build/release/App",
+            "preLaunchTask": "swift: Build Release App"
+        }
+    ]
+}
