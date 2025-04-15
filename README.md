@@ -20,7 +20,7 @@
 
 </div>
 
-This package implements cryptographic operations required by the AT Protocol, using Apple's [swift-crypto](https://github.com/apple/swift-crypto) and compatible libraries.
+This Swift package implements cryptographic operations required by the AT Protocol, using Apple's [swift-crypto](https://github.com/apple/swift-crypto) and compatible libraries. It's designed to be similar in features as the [`crypto`](https://github.com/bluesky-social/atproto/tree/main/packages/crypto) package in the official [`atproto`](https://github.com/bluesky-social/atproto) TypeScript repository. 
 ATCryptography supports the following cryptographic systems:
 - "p256," otherwise known as "secp256r1" or "NIST P-256."
 - "k256," otherwise known as "secp256k1" or "NIST K-256."
