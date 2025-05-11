@@ -20,7 +20,7 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-crypto.git", "1.0.0" ..< "4.0.0"),
-        .package(url: "https://github.com/21-DOT-DEV/swift-secp256k1.git", from: "0.18.0"),
+        .package(url: "https://github.com/21-DOT-DEV/swift-secp256k1.git", exact: "0.18.0"),
         .package(url: "https://github.com/attaswift/BigInt.git", from: "5.5.1")
     ],
     targets: [
