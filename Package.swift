@@ -6,9 +6,9 @@ import PackageDescription
 let package = Package(
     name: "ATCryptography",
     platforms: [
-        .iOS(.v14),
+        .iOS(.v16),
         .macOS(.v13),
-        .tvOS(.v14),
+        .tvOS(.v16),
         .visionOS(.v1),
         .watchOS(.v9)
     ],
