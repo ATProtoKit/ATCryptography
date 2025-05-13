@@ -21,9 +21,6 @@ extension P256.Signing.PublicKey {
     /// - Throws: An error if the raw representation is invalid or not uncompressed.
     @available(iOS, introduced: 13, obsoleted: 16)
     @available(tvOS, introduced: 13, obsoleted: 16)
-    @available(macOS, unavailable)
-    @available(visionOS, unavailable)
-    @available(watchOS, unavailable)
     public func compressedRepresentationCompat() throws -> Data {
         let rawKey = self.rawRepresentation
 
@@ -55,9 +52,6 @@ extension P256.Signing.PublicKey {
     ///   if the data is malformed or does not represent a point on the P256 curve.
     @available(iOS, introduced: 13, obsoleted: 16)
     @available(tvOS, introduced: 13, obsoleted: 16)
-    @available(macOS, unavailable)
-    @available(visionOS, unavailable)
-    @available(watchOS, unavailable)
     public static func decompressP256PublicKey(compressed compressedKey: Data) throws -> P256.Signing.PublicKey {
         guard compressedKey.count == 33 else {
             throw P256Error.invalidCompressedKey
@@ -115,10 +109,7 @@ extension P256.Signing.PublicKey {
     /// the simplified square root algorithm cannot be used.
     @available(iOS, introduced: 13, obsoleted: 16)
     @available(tvOS, introduced: 13, obsoleted: 16)
-    @available(macOS, unavailable)
-    @available(visionOS, unavailable)
-    @available(watchOS, unavailable)
-    private static func modularSquareRoot(_ squareRoot: BigUInt, prime prime: BigUInt) throws -> BigUInt? {
+    private static func modularSquareRoot(_ squareRoot: BigUInt, prime: BigUInt) throws -> BigUInt? {
         // Special case for p256 where prime ≡ 3 mod 4:
         // sqrt(squareRoot) ≡ squareRoot^((prime + 1) / 4) mod prime
         if prime % 4 == 3 {
@@ -148,9 +139,6 @@ extension Data {
     ///           If the current length is already `>= length`, the original data is returned unchanged.
     @available(iOS, introduced: 13, obsoleted: 16)
     @available(tvOS, introduced: 13, obsoleted: 16)
-    @available(macOS, unavailable)
-    @available(visionOS, unavailable)
-    @available(watchOS, unavailable)
     public func pad(to length: Int) -> Data {
         if count >= length { return self }
         return Data(repeating: 0, count: length - count) + self
@@ -168,9 +156,6 @@ extension Data {
 /// on newer platforms.
 @available(iOS, introduced: 13, obsoleted: 16)
 @available(tvOS, introduced: 13, obsoleted: 16)
-@available(macOS, unavailable)
-@available(visionOS, unavailable)
-@available(watchOS, unavailable)
 public struct CompressedP256 {
 
     /// Compresses a P256 public key using SEC1 encoding.
@@ -196,9 +181,6 @@ public struct CompressedP256 {
 /// Errors that may occur while working with compressed P256 keys.
 @available(iOS, introduced: 13, obsoleted: 16)
 @available(tvOS, introduced: 13, obsoleted: 16)
-@available(macOS, unavailable)
-@available(visionOS, unavailable)
-@available(watchOS, unavailable)
 public enum P256Error: Error {
 
     /// The input data is not a valid compressed P256 key.
