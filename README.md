@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://github.com/ATProtoKit/ATCryptography/blob/main/Sources/ATCryptography/ATCryptography.docc/Resources/atcryptography_icon.png" height="128" alt="A icon for ATCryptography, which contains three stacks of rounded rectangles in an isometric top view. At the top stack, the at symbol is in a thick weight, with a pointed arrow at the tip. The background of the stack contains many 0s and 1s in a fade. The three stacks are lighter shades of blue.">
+  <img src="https://github.com/ATProtoKit/ATCryptography/blob/main/Sources/ATCryptography/ATCryptography.docc/Resources/atcryptography_icon.png" height="128" alt="An icon for ATCryptography, which contains three stacks of rounded rectangles in an isometric top view. At the top stack, the at symbol is in a thick weight, with a pointed arrow at the tip. The background of the stack contains many 0s and 1s in a fade. The three stacks are lighter shades of blue.">
 </p>
 
 <h1 align="center">ATCryptography</h1>
@@ -20,7 +20,7 @@
 
 </div>
 
-This package implements cryptographic operations required by the AT Protocol, using Apple's [swift-crypto](https://github.com/apple/swift-crypto) and compatible libraries.
+This Swift package implements cryptographic operations required by the AT Protocol, using Apple's [swift-crypto](https://github.com/apple/swift-crypto) and compatible libraries. It's designed to be similar in features as the [`crypto`](https://github.com/bluesky-social/atproto/tree/main/packages/crypto) package in the official [`atproto`](https://github.com/bluesky-social/atproto) TypeScript repository. 
 ATCryptography supports the following cryptographic systems:
 - "p256," otherwise known as "secp256r1" or "NIST P-256."
 - "k256," otherwise known as "secp256k1" or "NIST K-256."
