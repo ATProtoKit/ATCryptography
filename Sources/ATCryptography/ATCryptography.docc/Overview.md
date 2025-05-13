@@ -74,6 +74,7 @@ The package fully open sourced and is licenced under the Apache 2.0 licence. You
 
 - ``K256Operations``
 - ``P256Operations``
+- ``CompressedP256``
 - ``DIDKey``
 
 ### Signature Handling
@@ -133,3 +134,4 @@ The package fully open sourced and is licenced under the Apache 2.0 licence. You
 - ``MultibaseError``
 - ``SecureRandomError``
 - ``SignatureVerificationError``
+- ``P256Error``
