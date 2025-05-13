@@ -41,7 +41,11 @@ public struct P256Encoding {
 
         // Convert to a compressed public key.
         let key = try P256.Signing.PublicKey(rawRepresentation: Data(rawKey))
-        return Array(key.compressedRepresentation)
+        if #available(iOS 16, tvOS 16, *) {
+            return Array(key.compressedRepresentation)
+        } else {
+            return Array(try key.compressedRepresentationCompat())
+        }
     }
 
     /// Decompresses a compressed p256 public key.
@@ -59,38 +63,46 @@ public struct P256Encoding {
     /// - Throws: `EllipticalCurveEncodingError.invalidKeyLength` if the key length is incorrect.
     ///           `EllipticalCurveEncodingError.keyDecodingFailed` if the key decoding failed.
     public static func decompress(publicKey: [UInt8], shouldAddPrefix: Bool = false) throws -> [UInt8] {
-        let rawKey: Data
+        let compressedPublicKey: Data
 
         switch publicKey.count {
             case 33 where publicKey.first == 0x02 || publicKey.first == 0x03:
                 // Remove prefix before using CryptoKit.
-                rawKey = Data(publicKey)
+                compressedPublicKey = Data(publicKey)
 
             case 32:
                 // Already in raw format.
-                rawKey = Data(publicKey)
+                compressedPublicKey = Data(publicKey)
 
             default:
                 throw EllipticalCurveEncodingError.invalidKeyLength(expected: 33, actual: publicKey.count)
         }
 
         // Convert to an uncompressed public key.
-        let key = try P256.Signing.PublicKey(compressedRepresentation: rawKey)
-        var uncompressedKey = Array(key.rawRepresentation)
+        var uncompressedRawPublicKey: [Data.Element]
+        if #available(iOS 16.0, *) {
+            let key = try P256.Signing.PublicKey(compressedRepresentation: compressedPublicKey)
+            uncompressedRawPublicKey = Array(key.rawRepresentation)
+        } else {
+            // Fallback on earlier versions
+            let key = try CompressedP256.decompress(compressedPublicKey)
+            uncompressedRawPublicKey = Array(key.rawRepresentation)
+        }
+//        var uncompressedRawPublicKey = Array(key.rawRepresentation)
 
         // Prepend the uncompressed prefix (0x04)
         if shouldAddPrefix {
             // Prepend the uncompressed key prefix (0x04) if not already present.
-            if uncompressedKey.first != 0x04 {
-                uncompressedKey.insert(0x04, at: 0)
+            if uncompressedRawPublicKey.first != 0x04 {
+                uncompressedRawPublicKey.insert(0x04, at: 0)
             }
         } else {
             // Ensure the key is returned without the prefix.
-            if uncompressedKey.first == 0x04 && (uncompressedKey.count - 1) != 63 {
-                uncompressedKey.removeFirst()
+            if uncompressedRawPublicKey.first == 0x04 && (uncompressedRawPublicKey.count - 1) != 63 {
+                uncompressedRawPublicKey.removeFirst()
             }
         }
 
-        return uncompressedKey
+        return uncompressedRawPublicKey
     }
 }

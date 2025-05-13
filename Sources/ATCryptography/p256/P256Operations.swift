@@ -47,8 +47,20 @@ public struct P256Operations {
         let allowMalleable = options?.areMalleableSignaturesAllowed ?? false
         let hashedData = await SHA256Hasher.sha256(data)
 
-        guard let publicKey = try? P256.Signing.PublicKey(compressedRepresentation: publicKey) else {
-            throw EllipticalCurveOperationsError.invalidPublicKey
+        let uncompressedPublicKey: P256.Signing.PublicKey
+
+        if #available(iOS 16, tvOS 16, *) {
+            guard let key = try? P256.Signing.PublicKey(compressedRepresentation: publicKey) else {
+                throw EllipticalCurveOperationsError.invalidPublicKey
+            }
+
+            uncompressedPublicKey = key
+        } else {
+            guard let key = try? CompressedP256.decompress(Data(publicKey)) else {
+                throw EllipticalCurveOperationsError.invalidPublicKey
+            }
+
+            uncompressedPublicKey = key
         }
 
         let signatureData = Data(signature)
@@ -66,7 +78,7 @@ public struct P256Operations {
             return false
         }
 
-        return publicKey.isValidSignature(correctedSignature, for: Data(hashedData))
+        return uncompressedPublicKey.isValidSignature(correctedSignature, for: Data(hashedData))
     }
 
     /// Checks if a signature is in compact format.
