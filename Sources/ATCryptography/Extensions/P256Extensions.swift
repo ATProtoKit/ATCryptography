@@ -11,7 +11,7 @@ import BigInt
 
 extension P256.Signing.PublicKey {
 
-    /// Returns the compressed SEC1 representation of a P256 public key,
+    /// Returns the compressed SEC1 representation of a p256 public key,
     /// compatible with platforms where `.compressedRepresentation` is unavailable.
     ///
     /// The compressed form includes only the X coordinate and a prefix byte
@@ -19,9 +19,7 @@ extension P256.Signing.PublicKey {
     ///
     /// - Returns: A 33-byte compressed public key.
     /// - Throws: An error if the raw representation is invalid or not uncompressed.
-    @available(iOS, introduced: 13, obsoleted: 16)
-    @available(tvOS, introduced: 13, obsoleted: 16)
-    public func compressedRepresentationCompat() throws -> Data {
+    internal func compressedRepresentationCompat() throws -> Data {
         let rawKey = self.rawRepresentation
 
         // Ensure it’s exactly 64 bytes: 32 bytes for X, 32 for Y.
@@ -40,7 +38,7 @@ extension P256.Signing.PublicKey {
         return Data([prefixByte]) + xCoordinate
     }
 
-    /// Decompresses a compressed P256 public key into a full uncompressed SEC1 key,
+    /// Decompresses a compressed p256 public key into a full uncompressed SEC1 key,
     /// and initializes a `P256.Signing.PublicKey` from it.
     ///
     /// This function is designed to support older Apple platforms (iOS/tvOS 13–15)
@@ -49,10 +47,10 @@ extension P256.Signing.PublicKey {
     /// - Parameter compressedKey: The SEC1 compressed public key data.
     /// - Returns: A valid `P256.Signing.PublicKey`.
     /// - Throws: `P256Error.invalidCompressedKey` or `P256Error.pointNotOnCurve`
-    ///   if the data is malformed or does not represent a point on the P256 curve.
+    ///   if the data is malformed or does not represent a point on the p256 curve.
     @available(iOS, introduced: 13, obsoleted: 16)
     @available(tvOS, introduced: 13, obsoleted: 16)
-    public static func decompressP256PublicKey(compressed compressedKey: Data) throws -> P256.Signing.PublicKey {
+    internal static func decompressP256PublicKey(compressed compressedKey: Data) throws -> P256.Signing.PublicKey {
         guard compressedKey.count == 33 else {
             throw P256Error.invalidCompressedKey
         }
@@ -131,59 +129,64 @@ extension Data {
 
     /// Pads the current `Data` instance with leading zeroes to match the specified length.
     ///
-    /// This is commonly used to ensure big-endian encoded integers or coordinates are a fixed size,
-    /// such as 32 bytes for P256 public key components.
+    /// This is commonly used to ensure big-endian encoded integers or coordinates are a fixed size, such as
+    /// 32 bytes for p256 public key components.
     ///
     /// - Parameter length: The target length in bytes.
     /// - Returns: A new `Data` instance of exactly `length` bytes, with leading zeroes added if necessary.
     ///           If the current length is already `>= length`, the original data is returned unchanged.
     @available(iOS, introduced: 13, obsoleted: 16)
     @available(tvOS, introduced: 13, obsoleted: 16)
-    public func pad(to length: Int) -> Data {
+    internal func pad(to length: Int) -> Data {
         if count >= length { return self }
         return Data(repeating: 0, count: length - count) + self
     }
 }
 
-/// Utility for compressing and decompressing P256 public keys on platforms
-/// where native CryptoKit support for compressed keys is unavailable.
+/// Utility for compressing and decompressing p256 public keys on platforms where native CryptoKit support
+/// for compressed keys is unavailable.
 ///
-/// This wrapper supports SEC1 compressed key encoding (33 bytes) and
-/// decoding by reconstructing the full point on the curve using the
-/// Weierstrass equation.
+/// This wrapper supports SEC1 compressed key encoding (33 bytes) and decoding by reconstructing the full
+/// point on the curve using the Weierstrass equation.
 ///
-/// Use this only on iOS/tvOS 13–15. Prefer native CryptoKit APIs
-/// on newer platforms.
-@available(iOS, introduced: 13, obsoleted: 16)
-@available(tvOS, introduced: 13, obsoleted: 16)
-public struct CompressedP256 {
+/// Use this only on iOS and tvOS 13–15. Prefer native CryptoKit APIs on newer platforms.
+@available(iOS, deprecated: 16, renamed: "P256.Signing.PublicKey.init(compressedRepresentation:)", message: "Use the initializer 'P256.Signing.PublicKey(compressedRepresentation:)' available on iOS 16 and later.")
+@available(tvOS, deprecated: 16, renamed: "P256.Signing.PublicKey.init(compressedRepresentation:)", message: "Use the initializer 'P256.Signing.PublicKey(compressedRepresentation:)' available on tvOS 16 and later.")
+@available(macOS, renamed: "P256.Signing.PublicKey.init(compressedRepresentation:)", message: "Use the initializer 'P256.Signing.PublicKey(compressedRepresentation:)' available on macOS.")
+@available(visionOS, renamed: "P256.Signing.PublicKey.init(compressedRepresentation:)", message: "Use the initializer 'P256.Signing.PublicKey(compressedRepresentation:)' available on visionOS.")
+@available(watchOS, renamed: "P256.Signing.PublicKey.init(compressedRepresentation:)", message: "Use the initializer 'P256.Signing.PublicKey(compressedRepresentation:)' available on watchOS.")
+internal struct CompressedP256 {
 
-    /// Compresses a P256 public key using SEC1 encoding.
+    /// Compresses a p256 public key using SEC1 encoding.
     ///
-    /// - Parameter key: A valid uncompressed P256 public key.
+    /// - Parameter key: A valid uncompressed p256 public key.
     /// - Returns: A 33-byte compressed SEC1 representation.
     ///
     /// - Throws: If compression fails (e.g., invalid raw data).
-    public static func compress(_ key: P256.Signing.PublicKey) throws -> Data {
+    internal static func compress(_ key: P256.Signing.PublicKey) throws -> Data {
         return try key.compressedRepresentationCompat()
     }
 
-    /// Decompresses a SEC1 compressed public key into a usable P256 public key.
+    /// Decompresses a SEC1 compressed public key into a usable p256 public key.
     ///
     /// - Parameter data: A 33-byte compressed key.
     /// - Returns: A full `P256.Signing.PublicKey`.
+    ///
     /// - Throws: `P256Error` if the key is malformed or cannot be decompressed.
-    public static func decompress(_ data: Data) throws -> P256.Signing.PublicKey {
+    internal static func decompress(_ data: Data) throws -> P256.Signing.PublicKey {
         return try P256.Signing.PublicKey.decompressP256PublicKey(compressed: data)
     }
 }
 
-/// Errors that may occur while working with compressed P256 keys.
-@available(iOS, introduced: 13, obsoleted: 16)
-@available(tvOS, introduced: 13, obsoleted: 16)
-public enum P256Error: Error {
+/// Errors that may occur while working with compressed p256 keys.
+@available(iOS, deprecated: 16, message: "")
+@available(tvOS, deprecated: 16, message: "")
+@available(macOS, message: "")
+@available(visionOS, message: "")
+@available(watchOS, message: "")
+internal enum P256Error: Error {
 
-    /// The input data is not a valid compressed P256 key.
+    /// The input data is not a valid compressed p256 key.
     case invalidCompressedKey
 
     /// The calculated Y coordinate is not a valid point on the curve.
