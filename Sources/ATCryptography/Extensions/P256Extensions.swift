@@ -17,6 +17,8 @@ extension P256.Signing.PublicKey {
     /// The compressed form includes only the X coordinate and a prefix byte
     /// (0x02 for even Y, 0x03 for odd Y), following the SEC1 standard.
     ///
+    /// - Warning: This should only be used for iOS 15 or earlier and tvOS 15 or earlier.
+    ///
     /// - Returns: A 33-byte compressed public key.
     /// - Throws: An error if the raw representation is invalid or not uncompressed.
     internal func compressedRepresentationCompat() throws -> Data {
@@ -43,6 +45,8 @@ extension P256.Signing.PublicKey {
     ///
     /// This function is designed to support older Apple platforms (iOS/tvOS 13–15)
     /// where `.init(compressedRepresentation:)` is unavailable.
+    ///
+    /// - Warning: This should only be used for iOS 15 or earlier and tvOS 15 or earlier.
     ///
     /// - Parameter compressedKey: The SEC1 compressed public key data.
     /// - Returns: A valid `P256.Signing.PublicKey`.
@@ -96,6 +100,8 @@ extension P256.Signing.PublicKey {
     /// This equation is valid only when `squareRoot` is a quadratic residue modulo `prime`. If `squareRoot`
     /// is not a square modulo `prime`, the function returns `nil`.
     ///
+    /// - Warning: This should only be used for iOS 15 or earlier and tvOS 15 or earlier.
+    ///
     /// - Parameters:
     ///   - squareRoot: The value whose modular square root is to be computed.
     ///   - prime: A prime modulus. For p256, this should be the curve's prime field.
@@ -128,6 +134,8 @@ extension Data {
     /// This is commonly used to ensure big-endian encoded integers or coordinates are a fixed size, such as
     /// 32 bytes for p256 public key components.
     ///
+    /// - Warning: This should only be used for iOS 15 or earlier and tvOS 15 or earlier.
+    ///
     /// - Parameter length: The target length in bytes.
     /// - Returns: A new `Data` instance of exactly `length` bytes, with leading zeroes added if necessary.
     ///           If the current length is already `>= length`, the original data is returned unchanged.
@@ -147,6 +155,8 @@ extension Data {
 internal struct CompressedP256 {
 
     /// Compresses a p256 public key using SEC1 encoding.
+    ///
+    /// - Warning: This should only be used for iOS 15 or earlier and tvOS 15 or earlier.
     ///
     /// - Parameter key: A valid uncompressed p256 public key.
     /// - Returns: A 33-byte compressed SEC1 representation.
@@ -168,6 +178,8 @@ internal struct CompressedP256 {
 }
 
 /// Errors that may occur while working with compressed p256 keys.
+///
+/// - Warning: This should only be used for iOS 15 or earlier and tvOS 15 or earlier.
 internal enum P256Error: Error {
 
     /// The input data is not a valid compressed p256 key.
