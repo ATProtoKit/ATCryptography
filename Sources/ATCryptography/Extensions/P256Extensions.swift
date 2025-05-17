@@ -48,8 +48,6 @@ extension P256.Signing.PublicKey {
     /// - Returns: A valid `P256.Signing.PublicKey`.
     /// - Throws: `P256Error.invalidCompressedKey` or `P256Error.pointNotOnCurve`
     ///   if the data is malformed or does not represent a point on the p256 curve.
-    @available(iOS, deprecated)
-    @available(tvOS, deprecated)
     internal static func decompressP256PublicKey(compressed compressedKey: Data) throws -> P256.Signing.PublicKey {
         guard compressedKey.count == 33 else {
             throw P256Error.invalidCompressedKey
@@ -105,8 +103,6 @@ extension P256.Signing.PublicKey {
     ///
     /// - Throws: `P256Error.pointNotOnCurve` if the prime does not satisfy `prime ≡ 3 mod 4`, which means
     /// the simplified square root algorithm cannot be used.
-    @available(iOS, deprecated)
-    @available(tvOS, deprecated)
     private static func modularSquareRoot(_ squareRoot: BigUInt, prime: BigUInt) throws -> BigUInt? {
         // Special case for p256 where prime ≡ 3 mod 4:
         // sqrt(squareRoot) ≡ squareRoot^((prime + 1) / 4) mod prime
@@ -135,8 +131,6 @@ extension Data {
     /// - Parameter length: The target length in bytes.
     /// - Returns: A new `Data` instance of exactly `length` bytes, with leading zeroes added if necessary.
     ///           If the current length is already `>= length`, the original data is returned unchanged.
-    @available(iOS, introduced: 13, obsoleted: 16)
-    @available(tvOS, introduced: 13, obsoleted: 16)
     internal func pad(to length: Int) -> Data {
         if count >= length { return self }
         return Data(repeating: 0, count: length - count) + self
@@ -150,11 +144,6 @@ extension Data {
 /// point on the curve using the Weierstrass equation.
 ///
 /// Use this only on iOS and tvOS 13–15. Prefer native CryptoKit APIs on newer platforms.
-@available(iOS, deprecated, renamed: "P256.Signing.PublicKey.init(compressedRepresentation:)", message: "Use the initializer 'P256.Signing.PublicKey(compressedRepresentation:)' available on iOS 16 and later.")
-@available(tvOS, deprecated, renamed: "P256.Signing.PublicKey.init(compressedRepresentation:)", message: "Use the initializer 'P256.Signing.PublicKey(compressedRepresentation:)' available on tvOS 16 and later.")
-@available(macOS, renamed: "P256.Signing.PublicKey.init(compressedRepresentation:)", message: "Use the initializer 'P256.Signing.PublicKey(compressedRepresentation:)' available on macOS.")
-@available(visionOS, renamed: "P256.Signing.PublicKey.init(compressedRepresentation:)", message: "Use the initializer 'P256.Signing.PublicKey(compressedRepresentation:)' available on visionOS.")
-@available(watchOS, renamed: "P256.Signing.PublicKey.init(compressedRepresentation:)", message: "Use the initializer 'P256.Signing.PublicKey(compressedRepresentation:)' available on watchOS.")
 internal struct CompressedP256 {
 
     /// Compresses a p256 public key using SEC1 encoding.
@@ -179,11 +168,6 @@ internal struct CompressedP256 {
 }
 
 /// Errors that may occur while working with compressed p256 keys.
-@available(iOS, deprecated, message: "")
-@available(tvOS, deprecated, message: "")
-@available(macOS, message: "")
-@available(visionOS, message: "")
-@available(watchOS, message: "")
 internal enum P256Error: Error {
 
     /// The input data is not a valid compressed p256 key.
