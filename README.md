@@ -59,6 +59,12 @@ ATCryptography is designed to be a server application. For a Linux server, Swift
 
 You can also use it on macOS. Please target **macOS** 13 or later.
 
+If you really need to use it in a client, here are the requirements for each platform:
+- **iOS** and **iPadOS** 14
+- **tvOS** 14
+- **visionOS** 1
+- **watchOS** 9
+
 You can also use this project for any programs you make using Swift and running on **Docker**.
 
 > [!WARNING]
