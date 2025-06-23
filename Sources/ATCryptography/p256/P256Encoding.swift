@@ -80,7 +80,7 @@ public struct P256Encoding {
 
         // Convert to an uncompressed public key.
         var uncompressedRawPublicKey: [Data.Element]
-        if #available(iOS 16.0, *) {
+        if #available(iOS 16.0, tvOS 16, *) {
             let key = try P256.Signing.PublicKey(compressedRepresentation: compressedPublicKey)
             uncompressedRawPublicKey = Array(key.rawRepresentation)
         } else {
