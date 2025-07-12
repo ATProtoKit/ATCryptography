@@ -1,5 +1,5 @@
 //
-//  Types.swift
+//  Models.swift
 //  ATCryptography
 //
 //  Created by Christopher Jr Riley on 2025-03-05.
