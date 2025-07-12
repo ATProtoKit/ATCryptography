@@ -5,7 +5,6 @@
 //  Created by Christopher Jr Riley on 2025-03-07.
 //
 
-
 import Foundation
 
 /// A collection of utility methods for verifying signatures.

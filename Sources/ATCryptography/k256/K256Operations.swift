@@ -7,7 +7,6 @@
 
 import Foundation
 import secp256k1
-import BigInt
 
 /// A collection of cryptographic operations related to k256.
 public struct K256Operations {

@@ -7,7 +7,6 @@
 
 import Foundation
 import Crypto
-import BigInt
 
 /// A collection of cryptographic operations related to p256.
 public struct P256Operations {
