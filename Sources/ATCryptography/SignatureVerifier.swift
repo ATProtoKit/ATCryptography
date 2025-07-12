@@ -52,7 +52,7 @@ public struct SignatureVerifier {
     /// - Returns: `true` if the signature is valid, otherwise `false`.
     ///
     /// - Throws: An error if decoding fails or signature verification fails.
-    public static func verifySignatureUtf8(didKey: String, data: String, signature: String, options: VerifyOptions? = nil) async throws -> Bool {
+    public static func verifySignatureUTF8(didKey: String, data: String, signature: String, options: VerifyOptions? = nil) async throws -> Bool {
         guard let dataBytes = data.data(using: .utf8)?.map({ $0 }) else {
             throw SignatureVerificationError.invalidEncoding(reason: "Invalid UTF-8 string")
         }
