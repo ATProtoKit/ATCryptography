@@ -84,4 +84,54 @@ public struct K256Operations {
             return false
         }
     }
+
+    // MARK: - With SessionToken
+
+    /// Verifies a DID-based signature from a session token.
+    ///
+    /// A ``SessionToken`` instance must be created before calling this method. The reason for this instead
+    /// of the method itself having to call the method is to help in ensuring the session token was
+    /// actually used.
+    ///
+    /// - Parameters:
+    ///   - did: The DID of the signer.
+    ///   - data: The original message that was signed.
+    ///   - sessionToken: The session token containing the signature to verify.
+    ///   - options: Optional verification settings. Optional. Defaults to `nil`.
+    /// - Returns: `true` if the signature is valid, otherwise `false`.
+    ///
+    /// - Throws: An error if the DID is not a valid k256 `did:key`.
+    public static func verifyDIDSignature(did: String, data: [UInt8], sessionToken: SessionToken, options: VerifyOptions? = nil) async throws -> Bool {
+        let jwt = sessionToken
+
+        guard let signature = jwt.signature else {
+            throw SignatureVerificationError.invalidEncoding(reason: "No valid signature found in the provided session token.")
+        }
+
+        return try await verifyDIDSignature(did: did, data: data, signature: [UInt8](signature), options: options)
+    }
+
+    /// Verifies a k256 signature from a session token.
+    ///
+    /// A ``SessionToken`` instance must be created before calling this method. The reason for this instead
+    /// of the method itself having to call the method is to help in ensuring the session token was
+    /// actually used.
+    ///
+    /// - Parameters:
+    ///   - publicKey: The public key in raw bytes.
+    ///   - data: The original message that was signed.
+    ///   - signature: The signature to verify.
+    ///   - options: Options for signature verification. Optional. Defaults to `nil`.
+    /// - Returns: `true` if the signature is valid, or `false` if not.
+    ///
+    /// - Throws: An error if signature verification fails.
+    public static func verifySignature(publicKey: [UInt8], data: [UInt8], sessionToken: SessionToken, options: VerifyOptions? = nil) async throws -> Bool {
+        let jwt = sessionToken
+
+        guard let signature = jwt.signature else {
+            throw SignatureVerificationError.invalidEncoding(reason: "No valid signature found in the provided session token.")
+        }
+
+        return try await K256Operations.verifySignature(publicKey: publicKey, data: data, signature: [UInt8](signature), options: options)
+    }
 }
