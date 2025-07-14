@@ -33,7 +33,7 @@ For details on cryptography in the AT Protocol, refer to the [Cryptography secti
 You can use the Swift Package Manager to download and import the library into your project:
 ```swift
 dependencies: [
-    .package(url: "https://github.com/ATProtoKit/ATCryptography.git", from: "0.1.0")
+    .package(url: "https://github.com/ATProtoKit/ATCryptography.git", from: "0.2.0")
 ]
 ```
 
