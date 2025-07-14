@@ -120,7 +120,7 @@ public struct K256Operations {
     /// - Parameters:
     ///   - publicKey: The public key in raw bytes.
     ///   - data: The original message that was signed.
-    ///   - signature: The signature to verify.
+    ///   - sessionToken: The signature to verify.
     ///   - options: Options for signature verification. Optional. Defaults to `nil`.
     /// - Returns: `true` if the signature is valid, or `false` if not.
     ///
