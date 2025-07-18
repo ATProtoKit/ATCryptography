@@ -8,7 +8,7 @@
 import Foundation
 
 /// A collection of utility methods for verifying signatures.
-public struct SignatureVerifier {
+public enum SignatureVerifier {
 
     /// Verifies a digital signature using a `did:key`.
     ///
