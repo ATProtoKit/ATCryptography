@@ -9,12 +9,14 @@ import Foundation
 import Testing
 @testable import ATCryptography
 
-@Suite("Public Key Compression") struct PublicKeyCompressionTests {
+@Suite
+struct `Public Key Compression` {
 
-    @Suite("k256 Compression") struct k256Tests {
+    @Suite
+    struct `k256 Compression` {
 
-        @Test("Compresses a k256 keypair to its appropriate length, then to its original length.")
-        func compressAndDecompressKeypair() throws {
+        @Test
+        func `Compresses a k256 keypair to its appropriate length, then to its original length`() throws {
             var keyBytes: [UInt8] = []
             var compressedKeys: [UInt8] = []
 
@@ -33,8 +35,8 @@ import Testing
                     "The decompressed public key should have 65 bytes.")
         }
 
-        @Test("Creates, compresses, and decompresses 100 k256 keypairs to make sure the compression works consistently.")
-        func compressionLoop() throws {
+        @Test
+        func `Creates, compresses, and decompresses 100 k256 keypairs to make sure the compression works consistently`() throws {
             var publicKeys: [[UInt8]] = []
             var compressedKeys: [[UInt8]] = []
             var decompressedKeys: [[UInt8]] = []
@@ -52,10 +54,11 @@ import Testing
         }
     }
 
-    @Suite("p256 Compression") struct p256Tests {
+    @Suite
+    struct `p256 Compression` {
 
-        @Test("Compresses a p256 keypair to its appropriate length, then to its original length.")
-        func compressAndDecompressKeypair() throws {
+        @Test
+        func `Compresses a p256 keypair to its appropriate length, then to its original length`() throws {
             var keyBytes: [UInt8] = []
             var compressedKeys: [UInt8] = []
 
@@ -74,8 +77,8 @@ import Testing
                     "The decompressed public key should have 65 bytes.")
         }
 
-        @Test("Creates, compresses, and decompresses 100 p256 keypairs to make sure the compression works consistently.")
-        func compressionLoop() throws {
+        @Test
+        func `Creates, compresses, and decompresses 100 p256 keypairs to make sure the compression works consistently`() throws {
             var publicKeys: [[UInt8]] = []
             var compressedKeys: [[UInt8]] = []
             var decompressedKeys: [[UInt8]] = []

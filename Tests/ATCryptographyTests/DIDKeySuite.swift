@@ -9,15 +9,16 @@ import Foundation
 import Testing
 @testable import ATCryptography
 
-@Suite("did:keys") struct didKeyTests {
+@Suite
+struct `did:keys` {
 
-    @Suite("k256 did:key") struct k256DIDKeyTests {
+    @Suite
+    struct `k256 did:key` {
 
-        @Test("Validate whether a private key correctly derives a did:key (in k256).",
-              arguments: zip(
-                EllipticalCurveTestVectors.k256Seeds,
-                EllipticalCurveTestVectors.k256IDs))
-        func validateKeyDerivesDID(seed: String, didKey: String) throws {
+        @Test(arguments: zip(
+            EllipticalCurveTestVectors.k256Seeds,
+            EllipticalCurveTestVectors.k256IDs))
+        func `Validate whether a private key correctly derives a did:key (in k256)`(seed: String, didKey: String) throws {
             let keypair = try K256Keypair.import(privateKey: seed.hexBytes)
             let keypairDIDKey = try keypair.did()
 
@@ -25,11 +26,10 @@ import Testing
                     "The k256 did:key generated from the seed should match the hard-coded did:key.")
         }
 
-        @Test("Converts between bytes to did:key (in k256).",
-              arguments: zip(
-                EllipticalCurveTestVectors.k256Seeds,
-                EllipticalCurveTestVectors.k256IDs))
-        func convertBytesToDIDKey(seed: String, didKey: String) throws {
+        @Test(arguments: zip(
+            EllipticalCurveTestVectors.k256Seeds,
+            EllipticalCurveTestVectors.k256IDs))
+        func `Converts between bytes to did:key (in k256)`(seed: String, didKey: String) throws {
             let keypair = try K256Keypair.import(privateKey: seed.hexBytes)
             let formattedDIDKey = try DIDKey.formatDIDKey(
                 jwtAlgorithm: k256JWTAlgorithm,
@@ -47,13 +47,13 @@ import Testing
         }
     }
 
-    @Suite("p256 did:key") struct p256DIDKeyTests {
+    @Suite
+    struct `p256 did:key` {
 
-        @Test("Derives the correct did:key from the JWK algorithm (in p256).",
-              arguments: zip(
-                EllipticalCurveTestVectors.p256PrivateKeys,
-                EllipticalCurveTestVectors.p256TestVectorsIDs))
-        func validateKeyDerivesDID(privateKey: String, didKey: String) throws {
+        @Test(arguments: zip(
+            EllipticalCurveTestVectors.p256PrivateKeys,
+            EllipticalCurveTestVectors.p256TestVectorsIDs))
+        func `Derives the correct did:key from the JWK algorithm (in p256)`(privateKey: String, didKey: String) throws {
             let bytes: [UInt8] = [UInt8](try Base58.decode(privateKey))
             let keypair = try P256Keypair.import(privateKey: bytes)
             let keypairDIDKey = try keypair.did()
@@ -62,11 +62,10 @@ import Testing
                     "The k256 did:key generated from the seed should match the hard-coded did:key.")
         }
 
-        @Test("Converts between bytes to did:key (in p256).",
-              arguments: zip(
-                EllipticalCurveTestVectors.p256PrivateKeys,
-                EllipticalCurveTestVectors.p256TestVectorsIDs))
-        func convertBytesToDIDKey(privateKey: String, didKey: String) throws {
+        @Test(arguments: zip(
+            EllipticalCurveTestVectors.p256PrivateKeys,
+            EllipticalCurveTestVectors.p256TestVectorsIDs))
+        func `Converts between bytes to did:key (in p256)`(privateKey: String, didKey: String) throws {
             let bytes: [UInt8] = [UInt8](try Base58.decode(privateKey))
             let keypair = try P256Keypair.import(privateKey: bytes)
             let formattedDIDKey = try DIDKey.formatDIDKey(

@@ -8,51 +8,51 @@
 import Testing
 @testable import ATCryptography
 
-struct Base16Suite {
+@Suite
+struct `Base 16 Encoding and Decoding` {
 
-    @Test("Encodes a single byte to lowercase Base16.")
-    func encode() {
+    @Test
+    func `Encodes a single byte to lowercase Base16`() {
         let input: [UInt8] = [0x12, 0xAB, 0xCD, 0xEF]
         let expectedOutput = "12abcdef"
         #expect(Base16.encode(input) == expectedOutput)
     }
 
-    @Test("Encodes a single byte to uppercase Base16.")
-    func encodeUpper() {
+    @Test
+    func `Encodes a single byte to uppercase Base16`() {
         let input: [UInt8] = [0x12, 0xAB, 0xCD, 0xEF]
         let expectedOutput = "12ABCDEF"
         #expect(Base16.encodeUpper(input) == expectedOutput)
     }
 
-    @Test("Decodes a valid lowercase Base16 string.")
-    func decodeLowercase() {
+    @Test
+    func `Decodes a valid lowercase Base16 string`() {
         let input = "12abcdef"
         let expectedOutput: [UInt8] = [0x12, 0xAB, 0xCD, 0xEF]
         #expect(Base16.decode(input) == expectedOutput)
     }
 
-    @Test("Decodes a valid uppercase Base16 string.")
-    func decodeUppercase() {
+    @Test
+    func `Decodes a valid uppercase Base16 string`() {
         let input = "12ABCDEF"
         let expectedOutput: [UInt8] = [0x12, 0xAB, 0xCD, 0xEF]
         #expect(Base16.decode(input) == expectedOutput)
     }
 
-    @Test("Decodes an invalid odd length Base16 string.")
-    func decodeInvalidOddLength() {
+    @Test
+    func `Decodes an invalid odd length Base16 string`() {
         let input = "123"
         #expect(Base16.decode(input) == nil)
     }
 
-    @Test("Decodes an invalid Base16 string (non-hex characters).")
-    func decodeInvalidCharacters() {
+    @Test
+    func `Decodes an invalid Base16 string (non-hex characters)`() {
         let input = "12GZ"
         #expect(Base16.decode(input) == nil)
     }
 
-    /// Test decoding an empty string.
-    @Test("Decodes an empty string.")
-    func decodeEmptyString() {
+    @Test
+    func `Decodes an empty string`() {
         let input = ""
         let expectedOutput: [UInt8] = []
         #expect(Base16.decode(input) == expectedOutput)

@@ -9,10 +9,11 @@ import Foundation
 import Testing
 @testable import ATCryptography
 
-@Suite("Signatures", .disabled()) struct SignatureTests {
+@Suite(.disabled())
+struct `Signatures` {
 
-    @Test("Verifies k256 and p256 signature vectors.", arguments: TestVectorEnum.signatureVectors, 1...TestVectorEnum.signatureVectors.count)
-    func verifySignatureVectors(signatureVector: TestVector, count: Int) async throws {
+    @Test(arguments: TestVectorEnum.signatureVectors, 1...TestVectorEnum.signatureVectors.count)
+    func `Verifies k256 and p256 signature vectors`(signatureVector: TestVector, count: Int) async throws {
         let messageBytes = signatureVector.base64Message.data(using: .utf8)?.base64EncodedString()
         let signatureBytes = signatureVector.base64Signature.data(using: .utf8)?.base64EncodedString()
         let keyBytes = try Multibase.multibaseToBytes(multibase: signatureVector.publicMultibaseKey)

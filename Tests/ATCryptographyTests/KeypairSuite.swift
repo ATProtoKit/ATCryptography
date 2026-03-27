@@ -9,12 +9,14 @@ import Foundation
 import Testing
 @testable import ATCryptography
 
-@Suite("Keypairs") struct KeypairTests {
+@Suite
+struct `Keypairs` {
 
-    @Suite("k256 Keypairs") struct K256KeypairTests {
+    @Suite
+    struct `k256 Keypairs` {
 
-        @Test("Has the same k256 did:key on import.")
-        func sameDIDKeyOnImport() async throws {
+        @Test
+        func `Has the same k256 did:key on import`() async throws {
             let importedKeypair: K256Keypair
 
             let keypair = try K256Keypair.create(isExportable: true)
@@ -24,8 +26,8 @@ import Testing
             #expect(try keypair.did() == importedKeypair.did(), "The imported k256 did:key should match the original.")
         }
 
-        @Test("Produces a valid k256 signature.")
-        func produceValidSignature() async throws {
+        @Test
+        func `Produces a valid k256 signature`() async throws {
             let data: [UInt8] = [1, 2, 3, 4, 5, 6, 7, 8]
             let keypair = try K256Keypair.create()
             let signature = try await keypair.sign(message: data)
@@ -40,10 +42,11 @@ import Testing
         }
     }
 
-    @Suite("p256 Keypairs") struct P256KeypairTests {
+    @Suite
+    struct `p256 Keypairs` {
 
-        @Test("Has the same p256 did:key on import.")
-        func sameDIDKeyOnImport() async throws {
+        @Test
+        func `Has the same p256 did:key on import`() async throws {
             let importedKeypair: P256Keypair
 
             let keypair = try P256Keypair.create(isExportable: true)
@@ -53,8 +56,8 @@ import Testing
             #expect(try keypair.did() == importedKeypair.did(), "The imported p256 did:key should match the original.")
         }
 
-        @Test("Produces a valid p256 signature.")
-        func produceValidSignature() async throws {
+        @Test
+        func `Produces a valid p256 signature`() async throws {
             let data: [UInt8] = [1, 2, 3, 4, 5, 6, 7, 8]
             let keypair = try P256Keypair.create()
             let signature = try await keypair.sign(message: data)

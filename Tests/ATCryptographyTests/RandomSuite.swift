@@ -9,11 +9,13 @@ import Foundation
 import Testing
 @testable import ATCryptography
 
-@Suite("Random") struct RandomTests {
-    @Suite("Random Integer Tests") struct Test {
+@Suite
+struct `Random` {
+    @Suite
+    struct `Random Integers` {
 
-        @Test("Distributs effectively, even with low bucket counts.")
-        func randomDistribution() async throws {
+        @Test
+        func `Distributs effectively, even with low bucket counts`() async throws {
             var counts: [Int] = [0, 0]
             let salt = UUID().uuidString
 

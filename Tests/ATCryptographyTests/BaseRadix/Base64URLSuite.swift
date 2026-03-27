@@ -9,10 +9,11 @@ import Foundation
 import Testing
 @testable import ATCryptography
 
-struct Base64URLSuite {
+@Suite
+struct `Base64URL Encoding and Decoding` {
 
-    @Test("Encodes bytes to a Base64URL string.")
-    func encodeURL() {
+    @Test
+    func `Encodes bytes to a Base64URL string`() {
         let input: [UInt8] = [0x8f, 0x2b, 0x7b, 0x4b, 0x9e, 0xa3, 0x38, 0x99, 0x63, 0x49, 0x05, 0x91, 0x10]
         let expectedOutput = "jyt7S56jOJljSQWREA"
 
@@ -21,8 +22,8 @@ struct Base64URLSuite {
         #expect(Base64URL.encodeURL(data) == expectedOutput)
     }
 
-    @Test("Encodes bytes to a Base64URLPad string.")
-    func encodeURLPad() {
+    @Test
+    func `Encodes bytes to a Base64URLPad string`() {
         let input: [UInt8] = [0x8f, 0x2b, 0x7b, 0x4b, 0x9e, 0xa3, 0x38, 0x99, 0x63, 0x49, 0x05, 0x91, 0x10, 0x0f, 0xfe]
         let expectedOutput = "jyt7S56jOJljSQWREA_-"
 
@@ -31,8 +32,8 @@ struct Base64URLSuite {
         #expect(Base64URL.encodeURLPad(data) == expectedOutput)
     }
 
-    @Test("Decodes a Base64URL string to an array of bytes.")
-    func decodeURL() {
+    @Test
+    func `Decodes a Base64URL string to an array of bytes`() {
         let input = "jyt7S56jOJljSQWREA"
         let expectedOutput: [UInt8] = [0x8f, 0x2b, 0x7b, 0x4b, 0x9e, 0xa3, 0x38, 0x99, 0x63, 0x49, 0x05, 0x91, 0x10]
 
@@ -41,8 +42,8 @@ struct Base64URLSuite {
         #expect(base64URL == Data(expectedOutput))
     }
 
-    @Test("Decodes a BaseURLPad string to an array of bytes.")
-    func decodeURLPad() {
+    @Test
+    func `Decodes a BaseURLPad string to an array of bytes`() {
         let input = "jyt7S56jOJljSQWREA_-"
         let expectOutput: [UInt8] = [0x8f, 0x2b, 0x7b, 0x4b, 0x9e, 0xa3, 0x38, 0x99, 0x63, 0x49, 0x05, 0x91, 0x10, 0x0f, 0xfe]
 
@@ -51,8 +52,8 @@ struct Base64URLSuite {
         #expect(base64URLPad == Data(expectOutput))
     }
 
-    @Test("Decodes an invalid Base64URL (contains illegal character).")
-    func decodeInvalidCharacter() {
+    @Test
+    func `Decodes an invalid Base64URL (contains illegal character)`() {
         let input = "jyt7S56jOJljSQ#REA_-"
 
         let base64URL = Base64URL.decodeURL(input)
@@ -60,8 +61,8 @@ struct Base64URLSuite {
         #expect(base64URL == nil)
     }
 
-    @Test("Decodes an invalid Base64URLPad (contains illegal character).")
-    func decodeInvalidCharacterPad() {
+    @Test
+    func `Decodes an invalid Base64URLPad (contains illegal character)`() {
         let input = "jyt7S56jOJljSQ#REA_-"
         
         let base64URLPad = Base64URL.decodeURLPad(input)
@@ -69,8 +70,8 @@ struct Base64URLSuite {
         #expect(base64URLPad == nil)
     }
 
-    @Test("Decodes an empty string (Base64URL)")
-    func decodeEmptyBase64URLString() async throws {
+    @Test
+    func `Decodes an empty string (Base64URL)`() {
         let input = ""
 
         let base64URL = Base64URL.decodeURL(input)
@@ -78,8 +79,8 @@ struct Base64URLSuite {
         #expect(base64URL == Data())
     }
 
-    @Test("Decodes an empty string (Base64URLPad)")
-    func decodeEmptyBase64URLPadString() async throws {
+    @Test
+    func `Decodes an empty string (Base64URLPad)`() {
         let input = ""
 
         let base64URLPad = Base64URL.decodeURLPad(input)
