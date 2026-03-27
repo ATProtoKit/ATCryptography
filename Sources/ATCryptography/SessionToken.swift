@@ -34,8 +34,14 @@ public struct SessionToken: Sendable, Encodable {
     /// the account DID's signing key."
     public let signature: Data?
 
-    /// Decodes a session token, then initializes a new instance with the results.
-    public init(sessionToken: String) throws {
+    /// Verifies and decodes a session token, then initializes a new instance with the results.
+    ///
+    /// - Parameters:
+    ///   - sessionToken: The session token to verify and decode.
+    ///   - didKey: The `did:key` string used to verify the session token.
+    ///
+    /// - Throws: An error if JWT decoding fails.
+    public init(_ sessionToken: String, verifyingWith didKey: String) throws {
         let decodedJWT = try SessionToken.decodeJWT(sessionToken)
 
         self.header = decodedJWT.header
@@ -60,13 +66,13 @@ public struct SessionToken: Sendable, Encodable {
     /// extract the corresponding components.
     ///
     /// - Parameter jwt: The JWT string to decode.
-    /// - Throws: A `SessionTokenError` if:
+    /// - Returns: A tuple containing the decoded header, payload, and signature values.
+    ///
+    /// - Throws: A ``SessionTokenError`` if:
+    ///   - The signature can't be verified.
     ///   - The token does not have exactly three segments.
     ///   - Any of the segments cannot be Base64-decoded.
     ///   - The header or payload cannot be parsed into their respective types.
-    /// - Returns: A tuple containing the decoded header, payload, and signature values.
-    ///
-    /// - Throws: ``SessionTokenError`` if the token is invalid or there are missing segments.
     private static func decodeJWT(_ jwt: String) throws -> (header: Header, payload: Payload, signature: Data) {
         let segments = jwt.split(separator: ".")
         guard segments.count == 3 else {
@@ -96,7 +102,7 @@ public struct SessionToken: Sendable, Encodable {
     /// the "type" value.
     public struct Header: Sendable, Codable {
 
-        /// The type of
+        /// The type of the session token.
         ///
         /// - Note: According to the AT Protocol specifications: "Currently `JWT`, but intend to
         /// update to a more specific value."
