@@ -44,7 +44,6 @@ public struct K256Operations {
     /// - Throws: An error if signature verification fails.
     public static func verifySignature(publicKey: [UInt8], data: [UInt8], signature: [UInt8], options: VerifyOptions? = nil) async throws -> Bool {
         let allowMalleable = options?.areMalleableSignaturesAllowed ?? false
-        let hashedData = await SHA256Hasher.sha256(data)
 
         guard let publicKey = try? secp256k1.Signing.PublicKey(dataRepresentation: publicKey, format: .compressed) else {
             throw EllipticalCurveOperationsError.invalidPublicKey
@@ -57,7 +56,7 @@ public struct K256Operations {
             throw EllipticalCurveOperationsError.invalidSignatureFormat
         }
 
-        guard let parsedSignature = try? secp256k1.Signing.ECDSASignature(dataRepresentation: signatureData) else {
+        guard let parsedSignature = try? secp256k1.Signing.ECDSASignature(compactRepresentation: signatureData) else {
             return false
         }
 
@@ -65,7 +64,7 @@ public struct K256Operations {
             return false
         }
 
-        return publicKey.isValidSignature(correctedSignature, for: Data(hashedData))
+        return publicKey.isValidSignature(correctedSignature, for: Data(data))
     }
 
     /// Checks if a signature is in compact format.
@@ -75,11 +74,9 @@ public struct K256Operations {
     public static func isCompactFormat(_ signature: [UInt8]) -> Bool {
         // ECDSA k256 signatures should be exactly 64 bytes in compact form.
         do {
-            // Attempt to initialize a P-256 signature from compact representation.
-            let ecdsaSignature = try secp256k1.Signing.ECDSASignature(dataRepresentation: signature)
-
-            // Convert back to raw representation and compare with input
-            return ecdsaSignature.dataRepresentation == signature.toData()
+            // Attempt to parse as a compact representation.
+            _ = try secp256k1.Signing.ECDSASignature(compactRepresentation: signature)
+            return true
         } catch {
             return false
         }

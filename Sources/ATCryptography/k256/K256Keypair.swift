@@ -99,9 +99,8 @@ public struct K256Keypair: ExportableKeypair, Sendable {
     ///
     /// - Throws: An error if signing fails.
     public func sign(message: [UInt8]) async throws -> [UInt8] {
-        let hash = await SHA256Hasher.sha256(message)
-        let signature = try privateKey.signature(for: Data(hash))
-        return Array(signature.dataRepresentation)
+        let signature = try privateKey.signature(for: Data(message))
+        return Array(try signature.compactRepresentation)
     }
 
     /// Exports the private key in raw byte format.
