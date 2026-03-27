@@ -104,8 +104,8 @@ extension secp256k1.Signing.ECDSASignature {
                 return nil
             }
 
-            // Curve order for k256.
-            let curveOrder = BigInt("FFFFFFFF00000000FFFFFFFFFFFFFFFFBCE6FAADA7179E84F3B9CAC2FC632551", radix: 16)!
+            // Curve order for secp256k1 (k256).
+            let curveOrder = BigInt("FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEBAAEDCE6AF48A03BBFD25E8CD0364141", radix: 16)!
             let halfOrder = curveOrder / 2
 
             let sInt = BigInt(data: s)
